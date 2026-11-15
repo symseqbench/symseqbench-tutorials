@@ -1,0 +1,5 @@
+quantity,closed form,estimate,difference,SymSeq call
+entropy rate h (bits per symbol),0.6666666666666666,0.6663316043678569,-0.0003350622988097518,"estimate_emc(...)[""entropy_rate""]"
+single-symbol entropy H_1 (bits),0.9182958340544896,0.9186661702205132,0.0003703361660236659,"estimate_emc(...)[""entropy""]"
+memory E = H_1 - h (bits),0.2516291673878229,0.25233456585265635,0.0007053984648334177,"estimate_emc(...)[""emc""]"
+topological entropy (bits per symbol),0.6942419136306174,0.6942419136306174,0.0,"topological_entropy(..., method=""lift"")"

@@ -1,0 +1,102 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "champalimaud-tutorial"
+version = "0.1.0"
+description = "Hands-on tutorial: generating, measuring and learning structured sequences with SymSeqBench"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "symseq",
+    "seqbench",
+    "marimo>=0.17",
+    # CPU-only torch, two legs:
+    #  - 2.11.0 is the last release whose Apple-silicon wheel runs on macOS 11 to 13 (2.12 and later need macOS 14);
+    #  - 2.2.2 is the last release with Intel-Mac wheels, and it needs numpy 1.x.
+    "torch==2.11.0 ; sys_platform != 'darwin' or platform_machine != 'x86_64'",
+    "torch==2.2.2 ; sys_platform == 'darwin' and platform_machine == 'x86_64'",
+    # One numpy for all four platforms, so that seeded sequences are identical on every laptop.
+    "numpy>=1.26,<2",
+    "scipy>=1.11",
+    "matplotlib>=3.8",
+    "pandas>=2.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[tool.setuptools]
+packages = ["tutorial"]
+
+[tool.uv]
+# The four platforms of the tutorial. The lock fails if a wheel-only package (torch) lacks a wheel for one of them.
+# The Windows entry carries no platform_machine on purpose: uv 0.6.6 maps win_amd64 wheels to
+# platform_machine == 'x86_64' while Python on Windows reports 'AMD64', so the precise marker is rejected by
+# uv 0.6.6. scripts/check_lock_platforms.py, called from tests/test_environment.py, checks the four platforms with
+# their real markers.
+required-environments = [
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",
+    "sys_platform == 'darwin' and platform_machine == 'arm64'",
+    "sys_platform == 'darwin' and platform_machine == 'x86_64'",
+    "sys_platform == 'win32'",
+]
+
+[tool.uv.sources]
+# Exact commits; the SHAs are also recorded in README.md.
+symseq = { git = "https://github.com/symseqbench/SymSeq.git", rev = "6c3d7236a276deebf8b3f26cbbaf92687f97de5b" }
+seqbench = { git = "https://github.com/symseqbench/SeqBench.git", rev = "c3ce976a72f0c6d73dff3334bb5ecac3838efe40" }
+# CPU-only wheels on Linux and Windows (no CUDA packages). macOS wheels on PyPI are CPU-only already.
+torch = [
+    { index = "pytorch-cpu", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.marimo.runtime]
+# Run a notebook from top to bottom when it is opened in the editor. marimo 0.25 does not do this
+# by default: it opens the notebook with every cell marked as out of date.
+auto_instantiate = true
+
+# Append this block to any Python project's pyproject.toml.
+# Canonical ruff config for all Renato's Python repos (standardized 2026-04-16).
+# Review the target-version and extend-exclude per repo.
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["docs", "notebooks", "_archive", "deprecated"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "B008",   # mutable default arg (common in scientific code)
+    "RUF001", # ambiguous unicode in strings (μ, α, β etc. in scientific code)
+    "RUF002", # ambiguous unicode in docstrings
+    "RUF003", # ambiguous unicode in comments
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

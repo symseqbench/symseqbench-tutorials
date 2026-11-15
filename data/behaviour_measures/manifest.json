@@ -1,0 +1,46 @@
+{
+ "settings": {
+  "min_string_length": 10,
+  "max_block_size": 10,
+  "n_compared": 30,
+  "compared_length": 50,
+  "compared_seed": 42,
+  "markov_max_order": 5,
+  "vlmc_max_depth": 5,
+  "mi_max_distance": 20,
+  "mi_shuffles": 20,
+  "mi_confidence": 0.95,
+  "mi_seed": 42,
+  "lift_max": 15,
+  "lift_min_tokens": 500,
+  "lift_max_blocks": 1500,
+  "first_order_seed": 1,
+  "shuffled_seed": 2,
+  "band_shuffles": 500,
+  "band_seed": 3,
+  "convergence_tokens": [
+   250,
+   500,
+   1000,
+   2000,
+   5000,
+   10000,
+   20000
+  ]
+ },
+ "datasets": [
+  "zebrafish",
+  "turtle",
+  "finch",
+  "seal"
+ ],
+ "missing": [],
+ "complete": true,
+ "checks_failed": [],
+ "files": {
+  "zebrafish.json": "14d37d022ce45e6425949471f1e9b8ffb1de6e5dcda51aca40b6f90ada66755d",
+  "turtle.json": "cf89feccfaf2cf9eae35208a511df761695a3118a914363771d9c02a489e7274",
+  "finch.json": "5660038a2b4569957ff858537a52e079a7197b6fb434a1878e78dcc1fc4dc304",
+  "seal.json": "ff28f9517541db28115ce6675d3820318e8c79e95c3225fa81a0467795de32bc"
+ }
+}

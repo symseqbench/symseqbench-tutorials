@@ -1,0 +1,142 @@
+{
+ "experiment": "complexity",
+ "kind": "pilot",
+ "placeholder": true,
+ "written": "2026-11-13 05:37:13",
+ "settings": {
+  "n_states": 8,
+  "alphabet_size": 6,
+  "n_terminal_states": 3,
+  "min_length": 2,
+  "max_length": 40,
+  "levels": [
+   {
+    "target_nats": 0.8,
+    "band_bits": [
+     1.26,
+     1.42
+    ]
+   },
+   {
+    "target_nats": 1.0,
+    "band_bits": [
+     1.45,
+     1.6
+    ]
+   },
+   {
+    "target_nats": 1.1,
+    "band_bits": [
+     1.63,
+     1.77
+    ]
+   },
+   {
+    "target_nats": 1.3,
+    "band_bits": [
+     1.86,
+     1.98
+    ]
+   },
+   {
+    "target_nats": 1.4,
+    "band_bits": [
+     2.0,
+     2.12
+    ]
+   }
+  ],
+  "grammars_per_level": 1,
+  "first_grammar_seed": 101,
+  "max_candidates": 80,
+  "min_memory_gap_bits": 0.05,
+  "min_strings": 1000,
+  "sizes": [
+   50,
+   200,
+   800
+  ],
+  "training_sample": "draws",
+  "validation_fraction": 0.2,
+  "n_heldout": 200,
+  "max_draws": 100000,
+  "max_steps": 2000,
+  "eval_every": 50,
+  "seeds": [
+   101
+  ]
+ },
+ "network": {
+  "sample_length": 40,
+  "n_train": 2000,
+  "n_heldout": 500,
+  "batch_size": 32,
+  "epochs": 30,
+  "learning_rate": 0.001,
+  "parameter_budget": 20000,
+  "transformer_width": 32,
+  "transformer_heads": 4,
+  "transformer_layers": 2,
+  "targets": "seqbench",
+  "threads": 1
+ },
+ "seeds": [
+  101
+ ],
+ "sizes": [
+  50,
+  200,
+  800
+ ],
+ "models": [
+  "rnn",
+  "linear transformer"
+ ],
+ "levels_short_of_grammars": [],
+ "expected": 30,
+ "present": 30,
+ "missing": [],
+ "failed_jobs": [],
+ "complete": true,
+ "checks_failed": [],
+ "files": {
+  "runs/level1-grammar101__rnn__n50__seed101.json": "01a28c3f5faf8481d9317cd07a069f6a5c8d908fdc03e1d973f54f57b33f28c3",
+  "runs/level1-grammar101__linear-transformer__n50__seed101.json": "012bb00cff0d706cdd15f2c041fd490861f5d3d16898ba9ba233b204f624475f",
+  "runs/level1-grammar101__rnn__n200__seed101.json": "11df2280a14b8da3371cc6b20722710c8a5dab2d91ab736542e6098731107826",
+  "runs/level1-grammar101__linear-transformer__n200__seed101.json": "f968fb5554dd43b86d584cbe30833a04fdfbc99d2c8849ce66a90c243d565548",
+  "runs/level1-grammar101__rnn__n800__seed101.json": "786303684e296c6204a7f398a706cbc6b796693f4f3936f00a5b94da43cb03b3",
+  "runs/level1-grammar101__linear-transformer__n800__seed101.json": "0297808ef36a06d943f258b130a91d5968fe05f75e83be813e017913cdbb0847",
+  "runs/level2-grammar101__rnn__n50__seed101.json": "94508dc138920d5e859a26e68f9e75f3a16d99b940f7746ebf6dd7acb5e1749a",
+  "runs/level2-grammar101__linear-transformer__n50__seed101.json": "75d6259c2d3c1f740d0e7554a1272cd5ac7ec5482f96b88ccae5ec8b35690e53",
+  "runs/level2-grammar101__rnn__n200__seed101.json": "2e080560f33444a53bfb6fc6785c2c2aa03e7071d886ed76289638e4ff239433",
+  "runs/level2-grammar101__linear-transformer__n200__seed101.json": "9cc3112347d9ccd93ae8d81fbeffc01112dfec0b6c60b849cbcd03f4afdf864a",
+  "runs/level2-grammar101__rnn__n800__seed101.json": "091e297a595419f83f5963b4545c4ea060b4bc69490d907049c5a07c5dd84d71",
+  "runs/level2-grammar101__linear-transformer__n800__seed101.json": "4d355408b2e8b7dff724b7cf3d059e0a023b75b0bf3abe504c5c5cfe3c73a879",
+  "runs/level3-grammar102__rnn__n50__seed101.json": "5978d9dafd1b00196745ee9e8636f4495f68dfef36cfa7e4f439f734a6bdb0bc",
+  "runs/level3-grammar102__linear-transformer__n50__seed101.json": "1e2746f7a103e11c5d58520265989045f79ba11108355df9d2951ac741f10e67",
+  "runs/level3-grammar102__rnn__n200__seed101.json": "48f6bddb9c3b465927bc04ada906643ce7ffaf801a6037bdcc0846c71b25b00a",
+  "runs/level3-grammar102__linear-transformer__n200__seed101.json": "7483dc1ec84949548ead642eed661e4b532668f330a7c49f089c6727e063103b",
+  "runs/level3-grammar102__rnn__n800__seed101.json": "7d68d391dce0a0ddfd70959943875c2195a44f6a0e565f51b7f71d6e1316443a",
+  "runs/level3-grammar102__linear-transformer__n800__seed101.json": "086d1f716206b62e34ba479a09a92be7ef5bb813924f71cc89edf781780f67c1",
+  "runs/level4-grammar101__rnn__n50__seed101.json": "b89470931f15a2c7048fd996a9afb99f45e249ffc2987c19b9da120429d2aa58",
+  "runs/level4-grammar101__linear-transformer__n50__seed101.json": "a1eb234eb69ca6a767709cfca81ca728a598e0818cfcda75d895de16feeed705",
+  "runs/level4-grammar101__rnn__n200__seed101.json": "6116e14aacb6232587ef8ff3ce6bfe516970e4495957620fae47b7dec053e0a7",
+  "runs/level4-grammar101__linear-transformer__n200__seed101.json": "6d47a02d839736bed72d9706dd425cd225c2ad1ed0782c7d10ed4638d00793cb",
+  "runs/level4-grammar101__rnn__n800__seed101.json": "533473a2a3d3c705e7811e8b9f965a4238de80b65917cbcaf7e6bf6e87b14a00",
+  "runs/level4-grammar101__linear-transformer__n800__seed101.json": "21d6db3f39bb5277ae9fadcc3c7ef45597599287b0dc4de753a51ebd7e44ed97",
+  "runs/level5-grammar103__rnn__n50__seed101.json": "e31638b6a62fbd5db17234028587abaec2aed631e0d25b5e1943f3fd1b9b22b0",
+  "runs/level5-grammar103__linear-transformer__n50__seed101.json": "660acd9cd3b40d3cf9be9aff916e5d56fccae89343b8cfea90e90eab1e5ace18",
+  "runs/level5-grammar103__rnn__n200__seed101.json": "008719cb75464024ccfbbb1d15da41b28d5465784e4550e95e3ef3d58058e1a5",
+  "runs/level5-grammar103__linear-transformer__n200__seed101.json": "bd16314c9190585c0f390b59743212712893e0c95fea2bb08db1fa88b64dd23a",
+  "runs/level5-grammar103__rnn__n800__seed101.json": "53e2b014a95e398393e2802d4528de708d5b3ed63e384cac67e2c824f20c28c2",
+  "runs/level5-grammar103__linear-transformer__n800__seed101.json": "38d9bec5e661af133ad8347af3fbccf66607afd26a4a712e0b9591e6f8b381e2"
+ },
+ "grammars": {
+  "file": "grammars.json",
+  "sha256": "e2ab8aa39222504a4468abc545b0f7999fafa90425db0b56cadbdece76441950"
+ },
+ "summary": {
+  "file": "summary.csv",
+  "sha256": "8d34bbe25f40107049f2bf4de83ac39b1dd92d7f55f3f4a06747a6cd506c191f"
+ }
+}

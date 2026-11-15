@@ -1,0 +1,133 @@
+{
+ "kind": "smoke",
+ "rung": "2-AX (p_target 0.9)",
+ "family": "regular",
+ "model": "rnn",
+ "seed": 103,
+ "settings": {
+  "sample_length": 40,
+  "n_train": 256,
+  "n_heldout": 128,
+  "batch_size": 32,
+  "epochs": 3,
+  "learning_rate": 0.001,
+  "parameter_budget": 20000,
+  "transformer_width": 32,
+  "transformer_heads": 4,
+  "transformer_layers": 2,
+  "targets": "seqbench",
+  "threads": 1
+ },
+ "n_parameters": 20053,
+ "model_size": {
+  "hidden units": 131
+ },
+ "n_classes": 10,
+ "data": {
+  "n_train": 256,
+  "n_train_removed": 0,
+  "n_heldout": 128,
+  "seqbench_seeds": {
+   "train": 1001353,
+   "heldout": 1000003
+  }
+ },
+ "exact": {
+  "mean_length": 4.499999999987872,
+  "string_entropy": 6.273815830782112,
+  "entropy_rate": 1.1406937874174448,
+  "ceiling_with_eos": 0.6444444444448274,
+  "ceiling_within": 0.5428571428577772,
+  "previous_symbol_with_eos": 0.5911111111117251,
+  "previous_symbol_within": 0.47428571428666494,
+  "first_symbol_entropy": 1.0,
+  "conditional_entropy": 1.1719590735102947
+ },
+ "optimum": {
+  "n_targets": 4218,
+  "cross_entropy": 1.1427851278706547,
+  "cross_entropy_realised": 1.1413644703609926,
+  "n_with_eos": 4218,
+  "accuracy_with_eos": 0.6532954006638214,
+  "variance_with_eos": 526.4639999999766,
+  "n_within": 3293,
+  "accuracy_within": 0.5559064682659929,
+  "variance_within": 526.4639999999766
+ },
+ "history": {
+  "epoch": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "train_loss": [
+   null,
+   3.20501893549754,
+   2.9171305118905635,
+   2.713514296634798
+  ],
+  "accuracy_with_eos": [
+   0.05571360834518729,
+   0.21929824561403508,
+   0.2496443812233286,
+   0.38477951635846375
+  ],
+  "accuracy_within": [
+   0.05526875189796538,
+   0.1682356513817188,
+   0.3631946553294868,
+   0.3355602793805041
+  ],
+  "cross_entropy": [
+   3.329522470661451,
+   3.0248296456407067,
+   2.8009653104996444,
+   2.564233178490991
+  ]
+ },
+ "final": {
+  "accuracy_with_eos": 0.38477951635846375,
+  "accuracy_within": 0.3355602793805041,
+  "cross_entropy": 2.564233178490991
+ },
+ "weights_sha256": "a64fb8811328703239e93ac2a9135275250e1d5ceb8113a36f0c3a980929295b",
+ "checks": {
+  "cross_entropy": {
+   "largest_advantage_bits": -6001.660210892333,
+   "allowed_bits": 20.0,
+   "passed": true
+  },
+  "accuracy_with_eos": {
+   "largest_excess": -0.26851588430535767,
+   "allowed": 0.027198676307748172,
+   "passed": true
+  },
+  "accuracy_within": {
+   "largest_excess": -0.19271181293650608,
+   "allowed": 0.03483875392228418,
+   "passed": true
+  },
+  "passed": true
+ },
+ "seconds": {
+  "data": 0.6483946619991912,
+  "training": 0.10297573199204635,
+  "evaluation": 0.022434810001868755,
+  "total": 0.13219877000665292
+ },
+ "environment": {
+  "python": "3.11.11",
+  "torch": "2.11.0+cpu",
+  "numpy": "1.26.4",
+  "symseq": "6c3d7236a276deebf8b3f26cbbaf92687f97de5b",
+  "seqbench": "c3ce976a72f0c6d73dff3334bb5ecac3838efe40",
+  "machine": "x86_64",
+  "system": "Linux",
+  "threads": 1,
+  "speed_probe_us": [
+   7.6,
+   9.4
+  ]
+ }
+}

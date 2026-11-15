@@ -1,0 +1,2846 @@
+{
+ "kind": "production",
+ "settings": {
+  "n_states": 8,
+  "alphabet_size": 6,
+  "n_terminal_states": 3,
+  "min_length": 2,
+  "max_length": 40,
+  "levels": [
+   {
+    "target_nats": 0.8,
+    "band_bits": [
+     1.26,
+     1.42
+    ]
+   },
+   {
+    "target_nats": 1.0,
+    "band_bits": [
+     1.45,
+     1.6
+    ]
+   },
+   {
+    "target_nats": 1.1,
+    "band_bits": [
+     1.63,
+     1.77
+    ]
+   },
+   {
+    "target_nats": 1.4,
+    "band_bits": [
+     2.0,
+     2.12
+    ]
+   }
+  ],
+  "grammars_per_level": 3,
+  "first_grammar_seed": 1,
+  "max_candidates": 80,
+  "min_memory_gap_bits": 0.05,
+  "min_strings": 1000,
+  "sizes": [
+   50,
+   200,
+   800
+  ],
+  "training_sample": "draws",
+  "validation_fraction": 0.2,
+  "n_heldout": 200,
+  "max_draws": 100000,
+  "max_steps": 2000,
+  "eval_every": 50,
+  "seeds": [
+   1,
+   2
+  ]
+ },
+ "levels": [
+  {
+   "level": 0,
+   "target_nats": 0.8,
+   "band_bits": [
+    1.26,
+    1.42
+   ],
+   "candidates": [
+    {
+     "seed": 1,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level",
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.45684708250722,
+     "synthesised_nats": 0.809586916044713,
+     "n_edges": 20,
+     "unifilar": true,
+     "n_strings": 225211765612960,
+     "acceptance": 0.9999995230582865,
+     "mean_length": 6.149982421160368,
+     "string_entropy": 9.523783569371732,
+     "entropy": 1.3320009768396215,
+     "ceiling": 0.48018764647571605,
+     "first_order_cross_entropy": 1.540259601971092,
+     "first_order_gap": 0.20825862513147042,
+     "memory_gap": 0.09336222209098555,
+     "bounds_gap": 9.623542657536473e-08,
+     "dropped_mass": 5.239507706069062e-13
+    },
+    {
+     "seed": 2,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 1.3534156453345878,
+     "synthesised_nats": 0.7774122335630504,
+     "n_edges": 20,
+     "unifilar": true,
+     "n_strings": 35276781041049,
+     "acceptance": 0.9994265627110978,
+     "mean_length": 7.085025703858971,
+     "string_entropy": 10.701927142579132,
+     "entropy": 1.323672618315996,
+     "ceiling": 0.4544262049513974,
+     "first_order_cross_entropy": 1.6144727369931973,
+     "first_order_gap": 0.29080011867720135,
+     "memory_gap": 0.11675396565981133,
+     "bounds_gap": 0.00010235371597019718,
+     "dropped_mass": 8.029790119786649e-13
+    },
+    {
+     "seed": 3,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 1.3025498125360016,
+     "synthesised_nats": 0.8034036770282279,
+     "n_edges": 19,
+     "unifilar": true,
+     "n_strings": 46258404320387,
+     "acceptance": 0.9987796453226736,
+     "mean_length": 7.3167488534825385,
+     "string_entropy": 10.348654438181844,
+     "entropy": 1.2443148904091856,
+     "ceiling": 0.46720571879451683,
+     "first_order_cross_entropy": 1.3759369940630575,
+     "first_order_gap": 0.13162210365387184,
+     "memory_gap": 0.09802658993598823,
+     "bounds_gap": 0.0002118225312492281,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 4,
+     "admitted": false,
+     "reasons": [
+      "memory gap below the minimum",
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.3880265126311215,
+     "synthesised_nats": 0.8038039480656699,
+     "n_edges": 23,
+     "unifilar": true,
+     "n_strings": 102203997760286,
+     "acceptance": 0.9997340145824125,
+     "mean_length": 6.458435715476032,
+     "string_entropy": 8.577595500771844,
+     "entropy": 1.1500528834717432,
+     "ceiling": 0.4982136448772396,
+     "first_order_cross_entropy": 1.2726392138794,
+     "first_order_gap": 0.12258633040765687,
+     "memory_gap": 0.04696787150333592,
+     "bounds_gap": 5.145675265949695e-05,
+     "dropped_mass": 3.0306317272233356e-12
+    },
+    {
+     "seed": 5,
+     "admitted": false,
+     "reasons": [
+      "memory gap below the minimum",
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.2979426134459915,
+     "synthesised_nats": 0.809586916044713,
+     "n_edges": 22,
+     "unifilar": true,
+     "n_strings": 51970105999886,
+     "acceptance": 0.9999975090817002,
+     "mean_length": 5.534152427843333,
+     "string_entropy": 5.948586945266363,
+     "entropy": 0.9103838655367514,
+     "ceiling": 0.6162231236322391,
+     "first_order_cross_entropy": 1.2440690422072005,
+     "first_order_gap": 0.33368517667044906,
+     "memory_gap": 0.03967750211226395,
+     "bounds_gap": 5.49977672427001e-07,
+     "dropped_mass": 7.778122764763871e-13
+    },
+    {
+     "seed": 6,
+     "admitted": false,
+     "reasons": [
+      "no start and terminal states that use every state"
+     ]
+    },
+    {
+     "seed": 7,
+     "admitted": false,
+     "reasons": [
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.40177968691824,
+     "synthesised_nats": 0.8004534371082334,
+     "n_edges": 20,
+     "unifilar": true,
+     "n_strings": 100400292030627,
+     "acceptance": 0.9999997665982341,
+     "mean_length": 5.429431637176403,
+     "string_entropy": 8.372167243298303,
+     "entropy": 1.302162884023616,
+     "ceiling": 0.4652796492030263,
+     "first_order_cross_entropy": 1.4205023001801453,
+     "first_order_gap": 0.11833941615652943,
+     "memory_gap": 0.06160188331404859,
+     "bounds_gap": 5.237284235318732e-08,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 8,
+     "admitted": false,
+     "reasons": [
+      "no start and terminal states that use every state"
+     ]
+    },
+    {
+     "seed": 9,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level"
+     ],
+     "topological_entropy_bits": 1.2205195653779914,
+     "synthesised_nats": 0.8159720124744607,
+     "n_edges": 23,
+     "unifilar": true,
+     "n_strings": 18036259424575,
+     "acceptance": 0.9584124584058453,
+     "mean_length": 9.996888899324233,
+     "string_entropy": 11.892552723586858,
+     "entropy": 1.0814470194672663,
+     "ceiling": 0.591880154635609,
+     "first_order_cross_entropy": 1.4201769742461916,
+     "first_order_gap": 0.3387299547789253,
+     "memory_gap": 0.19390766466034504,
+     "bounds_gap": 0.005572615455471494,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 10,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level"
+     ],
+     "topological_entropy_bits": 1.2596112159435022,
+     "synthesised_nats": 0.8139528176984444,
+     "n_edges": 19,
+     "unifilar": true,
+     "n_strings": 42105408198838,
+     "acceptance": 0.9961056250402818,
+     "mean_length": 9.512310163196256,
+     "string_entropy": 12.253173242378107,
+     "entropy": 1.1656023321378624,
+     "ceiling": 0.4804936677348638,
+     "first_order_cross_entropy": 1.495455773146752,
+     "first_order_gap": 0.3298534410088896,
+     "memory_gap": 0.2479915215774935,
+     "bounds_gap": 0.0005355020837465809,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 11,
+     "admitted": false,
+     "reasons": [
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.3551327726988027,
+     "synthesised_nats": 0.793430156939356,
+     "n_edges": 23,
+     "unifilar": true,
+     "n_strings": 62285690126975,
+     "acceptance": 0.9999958052181773,
+     "mean_length": 5.392629223925908,
+     "string_entropy": 7.817752368530088,
+     "entropy": 1.2229322387837422,
+     "ceiling": 0.4945150386594073,
+     "first_order_cross_entropy": 1.3753963939661284,
+     "first_order_gap": 0.1524641551823862,
+     "memory_gap": 0.06566836016326438,
+     "bounds_gap": 9.466845959864611e-07,
+     "dropped_mass": 3.8498176686345755e-13
+    },
+    {
+     "seed": 12,
+     "admitted": false,
+     "reasons": [
+      "no pairs of states that can share a symbol"
+     ]
+    },
+    {
+     "seed": 13,
+     "admitted": false,
+     "reasons": [
+      "memory gap below the minimum"
+     ],
+     "topological_entropy_bits": 1.3010120517594121,
+     "synthesised_nats": 0.8123771921128716,
+     "n_edges": 20,
+     "unifilar": true,
+     "n_strings": 61644881109662,
+     "acceptance": 0.9131222342532945,
+     "mean_length": 14.564929459030639,
+     "string_entropy": 16.484392185155993,
+     "entropy": 1.0590727204094004,
+     "ceiling": 0.6189013091938999,
+     "first_order_cross_entropy": 1.1814568908672405,
+     "first_order_gap": 0.12238417045784011,
+     "memory_gap": 0.02893860592832387,
+     "bounds_gap": 0.008424072661175029,
+     "dropped_mass": 2.070142316830275e-13
+    },
+    {
+     "seed": 14,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level",
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.5026129374571744,
+     "synthesised_nats": 0.8058522653194239,
+     "n_edges": 23,
+     "unifilar": true,
+     "n_strings": 247757619385365,
+     "acceptance": 0.9999997882563744,
+     "mean_length": 5.429616720110905,
+     "string_entropy": 8.953550213398223,
+     "entropy": 1.3925480480652637,
+     "ceiling": 0.47461739691937516,
+     "first_order_cross_entropy": 1.6249543411053633,
+     "first_order_gap": 0.23240629304009963,
+     "memory_gap": 0.08316417899410933,
+     "bounds_gap": 4.751162072634871e-08,
+     "dropped_mass": 2.620485328750955e-13
+    },
+    {
+     "seed": 15,
+     "admitted": false,
+     "reasons": [
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.4038386094415614,
+     "synthesised_nats": 0.8172107353495013,
+     "n_edges": 21,
+     "unifilar": true,
+     "n_strings": 153510358247434,
+     "acceptance": 0.9999998901653218,
+     "mean_length": 3.9499957139980246,
+     "string_entropy": 6.2039023137786815,
+     "entropy": 1.253314683936948,
+     "ceiling": 0.5454550147359947,
+     "first_order_cross_entropy": 1.3920553035003838,
+     "first_order_gap": 0.13874061956343575,
+     "memory_gap": 0.10555868349289566,
+     "bounds_gap": 3.201173568373175e-08,
+     "dropped_mass": 3.5444289672229143e-13
+    },
+    {
+     "seed": 16,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level",
+      "memory gap below the minimum",
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.1701938110552164,
+     "synthesised_nats": 0.7932394874021151,
+     "n_edges": 21,
+     "unifilar": true,
+     "n_strings": 4315912262495,
+     "acceptance": 0.9991726801125609,
+     "mean_length": 5.801136840988986,
+     "string_entropy": 4.685462998981624,
+     "entropy": 0.6889235003688425,
+     "ceiling": 0.701962943722003,
+     "first_order_cross_entropy": 0.7393765398772325,
+     "first_order_gap": 0.050453039508389974,
+     "memory_gap": 0.02324518175383894,
+     "bounds_gap": 0.00017556833974414804,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 17,
+     "admitted": false,
+     "reasons": [
+      "no start and terminal states that use every state"
+     ]
+    },
+    {
+     "seed": 18,
+     "admitted": false,
+     "reasons": [
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.317478094232881,
+     "synthesised_nats": 0.8095869160447113,
+     "n_edges": 20,
+     "unifilar": true,
+     "n_strings": 81673791951371,
+     "acceptance": 0.9999628096775302,
+     "mean_length": 5.665231902433021,
+     "string_entropy": 7.733023429868824,
+     "entropy": 1.1602032071901391,
+     "ceiling": 0.494524309722354,
+     "first_order_cross_entropy": 1.5026385822121833,
+     "first_order_gap": 0.34243537502204413,
+     "memory_gap": 0.10560786506262221,
+     "bounds_gap": 8.050025981871788e-06,
+     "dropped_mass": 1.1947477148392397e-12
+    },
+    {
+     "seed": 19,
+     "admitted": false,
+     "reasons": [
+      "no start and terminal states that use every state"
+     ]
+    },
+    {
+     "seed": 20,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level",
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.2307711313032301,
+     "synthesised_nats": 0.7909857206389229,
+     "n_edges": 17,
+     "unifilar": true,
+     "n_strings": 15583710910527,
+     "acceptance": 0.9999585866390819,
+     "mean_length": 5.331715027122203,
+     "string_entropy": 6.265333836701295,
+     "entropy": 0.989516080534806,
+     "ceiling": 0.5790402763214166,
+     "first_order_cross_entropy": 1.1524479801076222,
+     "first_order_gap": 0.16293189957281617,
+     "memory_gap": 0.1534717037024751,
+     "bounds_gap": 9.436319758597698e-06,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 21,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level",
+      "memory gap below the minimum"
+     ],
+     "topological_entropy_bits": 1.5959568327937734,
+     "synthesised_nats": 0.7909857206389221,
+     "n_edges": 26,
+     "unifilar": true,
+     "n_strings": 1432216914268403,
+     "acceptance": 0.999988339714224,
+     "mean_length": 5.9674833928872175,
+     "string_entropy": 10.50859281824189,
+     "entropy": 1.5082336369785436,
+     "ceiling": 0.4269066822805906,
+     "first_order_cross_entropy": 1.6122082622028029,
+     "first_order_gap": 0.10397462522425927,
+     "memory_gap": 0.04955149231861111,
+     "bounds_gap": 2.4144057094867394e-06,
+     "dropped_mass": 9.216226477253145e-13
+    },
+    {
+     "seed": 22,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level",
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.5021645869336815,
+     "synthesised_nats": 0.7909857206389213,
+     "n_edges": 23,
+     "unifilar": true,
+     "n_strings": 232799341794999,
+     "acceptance": 0.9999999833649558,
+     "mean_length": 4.777142228511807,
+     "string_entropy": 7.22116497732337,
+     "entropy": 1.2499545089412734,
+     "ceiling": 0.5397296800013824,
+     "first_order_cross_entropy": 1.3699072078878045,
+     "first_order_gap": 0.11995269894653116,
+     "memory_gap": 0.05691460745473176,
+     "bounds_gap": 4.154158636315722e-09,
+     "dropped_mass": 1.8139264468730453e-12
+    },
+    {
+     "seed": 23,
+     "admitted": false,
+     "reasons": [
+      "no start and terminal states that use every state"
+     ]
+    },
+    {
+     "seed": 24,
+     "admitted": false,
+     "reasons": [
+      "memory gap below the minimum",
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.3035188104952122,
+     "synthesised_nats": 0.8095869160447126,
+     "n_edges": 21,
+     "unifilar": true,
+     "n_strings": 57929784194439,
+     "acceptance": 0.9999987805697171,
+     "mean_length": 4.183775688790145,
+     "string_entropy": 5.502353492492852,
+     "entropy": 1.0614567108664883,
+     "ceiling": 0.5635979614720925,
+     "first_order_cross_entropy": 1.3143881228513536,
+     "first_order_gap": 0.25293141198486535,
+     "memory_gap": 0.0492449231174823,
+     "bounds_gap": 3.3937947936732704e-07,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 25,
+     "admitted": false,
+     "reasons": [
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.3788585847513033,
+     "synthesised_nats": 0.81957313263528,
+     "n_edges": 20,
+     "unifilar": true,
+     "n_strings": 156877984509841,
+     "acceptance": 0.9999997344274133,
+     "mean_length": 5.567990071969666,
+     "string_entropy": 8.077817747202973,
+     "entropy": 1.229876668309355,
+     "ceiling": 0.515834962810571,
+     "first_order_cross_entropy": 1.5627002559812837,
+     "first_order_gap": 0.33282358767192877,
+     "memory_gap": 0.14782936900558963,
+     "bounds_gap": 5.8334138443622206e-08,
+     "dropped_mass": 7.579124527582105e-13
+    },
+    {
+     "seed": 26,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level",
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.4908272020798354,
+     "synthesised_nats": 0.81957313263528,
+     "n_edges": 26,
+     "unifilar": true,
+     "n_strings": 339947419420999,
+     "acceptance": 0.9999999914663116,
+     "mean_length": 4.559161980040016,
+     "string_entropy": 7.637803611259052,
+     "entropy": 1.3739127657518038,
+     "ceiling": 0.46091545344148455,
+     "first_order_cross_entropy": 1.499339880034563,
+     "first_order_gap": 0.1254271142827592,
+     "memory_gap": 0.05440641269109858,
+     "bounds_gap": 2.214634149950048e-09,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 27,
+     "admitted": false,
+     "reasons": [
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.2919024517498225,
+     "synthesised_nats": 0.8214868173168655,
+     "n_edges": 21,
+     "unifilar": true,
+     "n_strings": 66630638099021,
+     "acceptance": 0.9999906855311798,
+     "mean_length": 4.604048011549741,
+     "string_entropy": 5.916106150267601,
+     "entropy": 1.0556844156357545,
+     "ceiling": 0.5592538850638298,
+     "first_order_cross_entropy": 1.175097065915791,
+     "first_order_gap": 0.11941265028003656,
+     "memory_gap": 0.05239539077023747,
+     "bounds_gap": 2.397909606023206e-06,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 28,
+     "admitted": false,
+     "reasons": [
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.2957212558548787,
+     "synthesised_nats": 0.8049341353656695,
+     "n_edges": 21,
+     "unifilar": true,
+     "n_strings": 52265528148570,
+     "acceptance": 0.999948057220698,
+     "mean_length": 6.831388024558769,
+     "string_entropy": 8.983289089186599,
+     "entropy": 1.1470877271073194,
+     "ceiling": 0.5622229720156876,
+     "first_order_cross_entropy": 1.4391821838834538,
+     "first_order_gap": 0.2920944567761343,
+     "memory_gap": 0.12075751699193149,
+     "bounds_gap": 9.569125699639161e-06,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 29,
+     "admitted": false,
+     "reasons": [
+      "no start and terminal states that use every state"
+     ]
+    },
+    {
+     "seed": 30,
+     "admitted": false,
+     "reasons": [
+      "no start and terminal states that use every state"
+     ]
+    },
+    {
+     "seed": 31,
+     "admitted": false,
+     "reasons": [
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.3494103553634007,
+     "synthesised_nats": 0.8125344404793051,
+     "n_edges": 18,
+     "unifilar": true,
+     "n_strings": 92868509100793,
+     "acceptance": 0.999960639734321,
+     "mean_length": 6.23138165755352,
+     "string_entropy": 9.186614961003855,
+     "entropy": 1.2703817051901833,
+     "ceiling": 0.4640818619700668,
+     "first_order_cross_entropy": 1.4207691157525746,
+     "first_order_gap": 0.15038741056239124,
+     "memory_gap": 0.1348436334071026,
+     "bounds_gap": 7.852714786093338e-06,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 32,
+     "admitted": false,
+     "reasons": [
+      "too few typical strings"
+     ],
+     "topological_entropy_bits": 1.365370252100821,
+     "synthesised_nats": 0.8095869160447118,
+     "n_edges": 21,
+     "unifilar": true,
+     "n_strings": 118185951476145,
+     "acceptance": 0.9999721879023301,
+     "mean_length": 5.589836694484914,
+     "string_entropy": 8.2323149404576,
+     "entropy": 1.249244150063277,
+     "ceiling": 0.473320482489594,
+     "first_order_cross_entropy": 1.3933260437472184,
+     "first_order_gap": 0.14408189368394142,
+     "memory_gap": 0.06568680701000562,
+     "bounds_gap": 6.088911507527806e-06,
+     "dropped_mass": 2.43696563108551e-12
+    },
+    {
+     "seed": 33,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 1.2658565471947085,
+     "synthesised_nats": 0.7831185333957799,
+     "n_edges": 18,
+     "unifilar": true,
+     "n_strings": 19658743755586,
+     "acceptance": 0.998724379347832,
+     "mean_length": 7.510000690420609,
+     "string_entropy": 10.094558437122645,
+     "entropy": 1.1861994850935456,
+     "ceiling": 0.48534490705620265,
+     "first_order_cross_entropy": 1.2940200012618237,
+     "first_order_gap": 0.10782051616827815,
+     "memory_gap": 0.06909706664615323,
+     "bounds_gap": 0.0002163932104798438,
+     "dropped_mass": 0.0
+    }
+   ],
+   "admitted": [
+    {
+     "spec": {
+      "name": "level 1, grammar 2",
+      "level": 0,
+      "seed": 2,
+      "target_nats": 0.8,
+      "states": [
+       "E",
+       "B(0)",
+       "A",
+       "D",
+       "F(0)",
+       "B(1)",
+       "C",
+       "F(1)"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A",
+        "B(1)"
+       ],
+       [
+        "A",
+        "F(1)"
+       ],
+       [
+        "B(0)",
+        "B(0)"
+       ],
+       [
+        "B(0)",
+        "E"
+       ],
+       [
+        "B(1)",
+        "B(1)"
+       ],
+       [
+        "B(1)",
+        "C"
+       ],
+       [
+        "C",
+        "A"
+       ],
+       [
+        "C",
+        "B(0)"
+       ],
+       [
+        "C",
+        "E"
+       ],
+       [
+        "C",
+        "F(1)"
+       ],
+       [
+        "D",
+        "B(1)"
+       ],
+       [
+        "D",
+        "D"
+       ],
+       [
+        "D",
+        "E"
+       ],
+       [
+        "E",
+        "B(1)"
+       ],
+       [
+        "E",
+        "F(1)"
+       ],
+       [
+        "F(0)",
+        "B(1)"
+       ],
+       [
+        "F(0)",
+        "C"
+       ],
+       [
+        "F(0)",
+        "D"
+       ],
+       [
+        "F(0)",
+        "F(1)"
+       ],
+       [
+        "F(1)",
+        "C"
+       ]
+      ],
+      "start": "F(0)",
+      "terminals": [
+       "B(0)",
+       "C",
+       "F(1)"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 1.3534156453345878,
+      "synthesised_nats": 0.7774122335630504,
+      "n_edges": 20,
+      "unifilar": true,
+      "n_strings": 35276781041049,
+      "acceptance": 0.9994265627110978,
+      "mean_length": 7.085025703858971,
+      "string_entropy": 10.701927142579132,
+      "entropy": 1.323672618315996,
+      "ceiling": 0.4544262049513974,
+      "first_order_cross_entropy": 1.6144727369931973,
+      "first_order_gap": 0.29080011867720135,
+      "memory_gap": 0.11675396565981133,
+      "bounds_gap": 0.00010235371597019718,
+      "dropped_mass": 8.029790119786649e-13
+     }
+    },
+    {
+     "spec": {
+      "name": "level 1, grammar 3",
+      "level": 0,
+      "seed": 3,
+      "target_nats": 0.8,
+      "states": [
+       "B",
+       "F",
+       "C",
+       "A(0)",
+       "D(0)",
+       "D(1)",
+       "A(1)",
+       "E"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A(0)",
+        "A(1)"
+       ],
+       [
+        "A(0)",
+        "D(0)"
+       ],
+       [
+        "A(1)",
+        "B"
+       ],
+       [
+        "B",
+        "A(1)"
+       ],
+       [
+        "B",
+        "D(0)"
+       ],
+       [
+        "B",
+        "E"
+       ],
+       [
+        "B",
+        "F"
+       ],
+       [
+        "C",
+        "A(0)"
+       ],
+       [
+        "C",
+        "B"
+       ],
+       [
+        "D(0)",
+        "A(1)"
+       ],
+       [
+        "D(0)",
+        "C"
+       ],
+       [
+        "D(0)",
+        "E"
+       ],
+       [
+        "D(1)",
+        "A(0)"
+       ],
+       [
+        "D(1)",
+        "F"
+       ],
+       [
+        "E",
+        "D(1)"
+       ],
+       [
+        "E",
+        "E"
+       ],
+       [
+        "E",
+        "F"
+       ],
+       [
+        "F",
+        "A(1)"
+       ],
+       [
+        "F",
+        "F"
+       ]
+      ],
+      "start": "B",
+      "terminals": [
+       "A(0)",
+       "A(1)",
+       "D(0)"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 1.3025498125360016,
+      "synthesised_nats": 0.8034036770282279,
+      "n_edges": 19,
+      "unifilar": true,
+      "n_strings": 46258404320387,
+      "acceptance": 0.9987796453226736,
+      "mean_length": 7.3167488534825385,
+      "string_entropy": 10.348654438181844,
+      "entropy": 1.2443148904091856,
+      "ceiling": 0.46720571879451683,
+      "first_order_cross_entropy": 1.3759369940630575,
+      "first_order_gap": 0.13162210365387184,
+      "memory_gap": 0.09802658993598823,
+      "bounds_gap": 0.0002118225312492281,
+      "dropped_mass": 0.0
+     }
+    },
+    {
+     "spec": {
+      "name": "level 1, grammar 33",
+      "level": 0,
+      "seed": 33,
+      "target_nats": 0.8,
+      "states": [
+       "C(0)",
+       "E",
+       "F(0)",
+       "A",
+       "F(1)",
+       "C(1)",
+       "B",
+       "D"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A",
+        "D"
+       ],
+       [
+        "A",
+        "E"
+       ],
+       [
+        "B",
+        "C(1)"
+       ],
+       [
+        "B",
+        "F(1)"
+       ],
+       [
+        "C(0)",
+        "B"
+       ],
+       [
+        "C(0)",
+        "E"
+       ],
+       [
+        "C(0)",
+        "F(1)"
+       ],
+       [
+        "C(1)",
+        "B"
+       ],
+       [
+        "C(1)",
+        "C(1)"
+       ],
+       [
+        "D",
+        "C(1)"
+       ],
+       [
+        "D",
+        "F(1)"
+       ],
+       [
+        "E",
+        "D"
+       ],
+       [
+        "F(0)",
+        "A"
+       ],
+       [
+        "F(0)",
+        "C(1)"
+       ],
+       [
+        "F(0)",
+        "D"
+       ],
+       [
+        "F(1)",
+        "A"
+       ],
+       [
+        "F(1)",
+        "C(0)"
+       ],
+       [
+        "F(1)",
+        "D"
+       ]
+      ],
+      "start": "F(0)",
+      "terminals": [
+       "B",
+       "D",
+       "F(1)"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 1.2658565471947085,
+      "synthesised_nats": 0.7831185333957799,
+      "n_edges": 18,
+      "unifilar": true,
+      "n_strings": 19658743755586,
+      "acceptance": 0.998724379347832,
+      "mean_length": 7.510000690420609,
+      "string_entropy": 10.094558437122645,
+      "entropy": 1.1861994850935456,
+      "ceiling": 0.48534490705620265,
+      "first_order_cross_entropy": 1.2940200012618237,
+      "first_order_gap": 0.10782051616827815,
+      "memory_gap": 0.06909706664615323,
+      "bounds_gap": 0.0002163932104798438,
+      "dropped_mass": 0.0
+     }
+    }
+   ],
+   "complete": true
+  },
+  {
+   "level": 1,
+   "target_nats": 1.0,
+   "band_bits": [
+    1.45,
+    1.6
+   ],
+   "candidates": [
+    {
+     "seed": 1,
+     "admitted": false,
+     "reasons": [
+      "memory gap below the minimum"
+     ],
+     "topological_entropy_bits": 1.5061863290130648,
+     "synthesised_nats": 1.001066017107719,
+     "n_edges": 24,
+     "unifilar": true,
+     "n_strings": 53006118928553335,
+     "acceptance": 0.9906206498841531,
+     "mean_length": 10.435518103998646,
+     "string_entropy": 16.321769595349977,
+     "entropy": 1.4272872857105408,
+     "ceiling": 0.41031107854227983,
+     "first_order_cross_entropy": 1.4776496950612843,
+     "first_order_gap": 0.05036240935074354,
+     "memory_gap": 0.047590115024111146,
+     "bounds_gap": 0.0011888748653160674,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 2,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 1.505733416318799,
+     "synthesised_nats": 1.0124012853818147,
+     "n_edges": 22,
+     "unifilar": true,
+     "n_strings": 55545259692183234,
+     "acceptance": 0.9516818922803143,
+     "mean_length": 11.93074949298364,
+     "string_entropy": 18.19177691204495,
+     "entropy": 1.4068617539854127,
+     "ceiling": 0.4289635868598615,
+     "first_order_cross_entropy": 1.485415882759125,
+     "first_order_gap": 0.07855412877371237,
+     "memory_gap": 0.07361969361661136,
+     "bounds_gap": 0.005525485884026415,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 3,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 1.5432413923015351,
+     "synthesised_nats": 1.0128158379103003,
+     "n_edges": 25,
+     "unifilar": true,
+     "n_strings": 117633923974859146,
+     "acceptance": 0.9719325275564981,
+     "mean_length": 11.815642248787185,
+     "string_entropy": 17.666884769274915,
+     "entropy": 1.3785407259590778,
+     "ceiling": 0.45828405752480184,
+     "first_order_cross_entropy": 1.4926853496719243,
+     "first_order_gap": 0.1141446237128465,
+     "memory_gap": 0.0874238702309953,
+     "bounds_gap": 0.003204828130309587,
+     "dropped_mass": 7.661194731462498e-13
+    },
+    {
+     "seed": 4,
+     "admitted": false,
+     "reasons": [
+      "no start and terminal states that use every state"
+     ]
+    },
+    {
+     "seed": 5,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 1.5740218533986183,
+     "synthesised_nats": 1.021608056379922,
+     "n_edges": 23,
+     "unifilar": true,
+     "n_strings": 213575186715795596,
+     "acceptance": 0.9986502530019606,
+     "mean_length": 8.78062744759643,
+     "string_entropy": 14.385623591997811,
+     "entropy": 1.4708282949201843,
+     "ceiling": 0.4052153994856106,
+     "first_order_cross_entropy": 1.6832122878240614,
+     "first_order_gap": 0.2123839929038771,
+     "memory_gap": 0.07530776840704978,
+     "bounds_gap": 0.00019922941117641557,
+     "dropped_mass": 3.376160573406808e-13
+    }
+   ],
+   "admitted": [
+    {
+     "spec": {
+      "name": "level 2, grammar 2",
+      "level": 1,
+      "seed": 2,
+      "target_nats": 1.0,
+      "states": [
+       "B",
+       "F(0)",
+       "F(1)",
+       "E",
+       "A",
+       "D(0)",
+       "C",
+       "D(1)"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A",
+        "E"
+       ],
+       [
+        "A",
+        "F(1)"
+       ],
+       [
+        "B",
+        "A"
+       ],
+       [
+        "B",
+        "E"
+       ],
+       [
+        "B",
+        "F(1)"
+       ],
+       [
+        "C",
+        "A"
+       ],
+       [
+        "C",
+        "E"
+       ],
+       [
+        "C",
+        "F(0)"
+       ],
+       [
+        "D(0)",
+        "B"
+       ],
+       [
+        "D(0)",
+        "C"
+       ],
+       [
+        "D(0)",
+        "D(1)"
+       ],
+       [
+        "D(0)",
+        "E"
+       ],
+       [
+        "D(0)",
+        "F(0)"
+       ],
+       [
+        "D(1)",
+        "B"
+       ],
+       [
+        "D(1)",
+        "E"
+       ],
+       [
+        "E",
+        "A"
+       ],
+       [
+        "E",
+        "B"
+       ],
+       [
+        "E",
+        "D(1)"
+       ],
+       [
+        "F(0)",
+        "D(1)"
+       ],
+       [
+        "F(1)",
+        "A"
+       ],
+       [
+        "F(1)",
+        "D(0)"
+       ],
+       [
+        "F(1)",
+        "F(1)"
+       ]
+      ],
+      "start": "A",
+      "terminals": [
+       "D(0)",
+       "F(0)",
+       "F(1)"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 1.505733416318799,
+      "synthesised_nats": 1.0124012853818147,
+      "n_edges": 22,
+      "unifilar": true,
+      "n_strings": 55545259692183234,
+      "acceptance": 0.9516818922803143,
+      "mean_length": 11.93074949298364,
+      "string_entropy": 18.19177691204495,
+      "entropy": 1.4068617539854127,
+      "ceiling": 0.4289635868598615,
+      "first_order_cross_entropy": 1.485415882759125,
+      "first_order_gap": 0.07855412877371237,
+      "memory_gap": 0.07361969361661136,
+      "bounds_gap": 0.005525485884026415,
+      "dropped_mass": 0.0
+     }
+    },
+    {
+     "spec": {
+      "name": "level 2, grammar 3",
+      "level": 1,
+      "seed": 3,
+      "target_nats": 1.0,
+      "states": [
+       "C",
+       "D",
+       "F",
+       "E",
+       "B(0)",
+       "B(1)",
+       "A(0)",
+       "A(1)"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A(0)",
+        "A(0)"
+       ],
+       [
+        "A(1)",
+        "A(0)"
+       ],
+       [
+        "A(1)",
+        "B(0)"
+       ],
+       [
+        "A(1)",
+        "C"
+       ],
+       [
+        "A(1)",
+        "D"
+       ],
+       [
+        "A(1)",
+        "E"
+       ],
+       [
+        "B(0)",
+        "B(1)"
+       ],
+       [
+        "B(0)",
+        "C"
+       ],
+       [
+        "B(0)",
+        "D"
+       ],
+       [
+        "B(0)",
+        "E"
+       ],
+       [
+        "B(1)",
+        "A(1)"
+       ],
+       [
+        "B(1)",
+        "B(1)"
+       ],
+       [
+        "B(1)",
+        "C"
+       ],
+       [
+        "B(1)",
+        "E"
+       ],
+       [
+        "C",
+        "B(1)"
+       ],
+       [
+        "C",
+        "D"
+       ],
+       [
+        "C",
+        "E"
+       ],
+       [
+        "D",
+        "A(0)"
+       ],
+       [
+        "D",
+        "B(1)"
+       ],
+       [
+        "D",
+        "D"
+       ],
+       [
+        "E",
+        "C"
+       ],
+       [
+        "F",
+        "B(0)"
+       ],
+       [
+        "F",
+        "C"
+       ],
+       [
+        "F",
+        "D"
+       ],
+       [
+        "F",
+        "F"
+       ]
+      ],
+      "start": "F",
+      "terminals": [
+       "A(0)",
+       "A(1)",
+       "B(0)"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 1.5432413923015351,
+      "synthesised_nats": 1.0128158379103003,
+      "n_edges": 25,
+      "unifilar": true,
+      "n_strings": 117633923974859146,
+      "acceptance": 0.9719325275564981,
+      "mean_length": 11.815642248787185,
+      "string_entropy": 17.666884769274915,
+      "entropy": 1.3785407259590778,
+      "ceiling": 0.45828405752480184,
+      "first_order_cross_entropy": 1.4926853496719243,
+      "first_order_gap": 0.1141446237128465,
+      "memory_gap": 0.0874238702309953,
+      "bounds_gap": 0.003204828130309587,
+      "dropped_mass": 7.661194731462498e-13
+     }
+    },
+    {
+     "spec": {
+      "name": "level 2, grammar 5",
+      "level": 1,
+      "seed": 5,
+      "target_nats": 1.0,
+      "states": [
+       "F",
+       "C",
+       "D",
+       "B(0)",
+       "E",
+       "B(1)",
+       "A(0)",
+       "A(1)"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A(0)",
+        "A(0)"
+       ],
+       [
+        "A(0)",
+        "B(0)"
+       ],
+       [
+        "A(0)",
+        "D"
+       ],
+       [
+        "A(1)",
+        "A(0)"
+       ],
+       [
+        "A(1)",
+        "B(0)"
+       ],
+       [
+        "A(1)",
+        "C"
+       ],
+       [
+        "B(0)",
+        "B(0)"
+       ],
+       [
+        "B(1)",
+        "B(1)"
+       ],
+       [
+        "B(1)",
+        "D"
+       ],
+       [
+        "B(1)",
+        "F"
+       ],
+       [
+        "C",
+        "A(0)"
+       ],
+       [
+        "C",
+        "D"
+       ],
+       [
+        "C",
+        "E"
+       ],
+       [
+        "D",
+        "C"
+       ],
+       [
+        "D",
+        "D"
+       ],
+       [
+        "D",
+        "E"
+       ],
+       [
+        "D",
+        "F"
+       ],
+       [
+        "E",
+        "A(1)"
+       ],
+       [
+        "E",
+        "C"
+       ],
+       [
+        "F",
+        "B(0)"
+       ],
+       [
+        "F",
+        "C"
+       ],
+       [
+        "F",
+        "E"
+       ],
+       [
+        "F",
+        "F"
+       ]
+      ],
+      "start": "B(1)",
+      "terminals": [
+       "A(0)",
+       "B(0)",
+       "F"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 1.5740218533986183,
+      "synthesised_nats": 1.021608056379922,
+      "n_edges": 23,
+      "unifilar": true,
+      "n_strings": 213575186715795596,
+      "acceptance": 0.9986502530019606,
+      "mean_length": 8.78062744759643,
+      "string_entropy": 14.385623591997811,
+      "entropy": 1.4708282949201843,
+      "ceiling": 0.4052153994856106,
+      "first_order_cross_entropy": 1.6832122878240614,
+      "first_order_gap": 0.2123839929038771,
+      "memory_gap": 0.07530776840704978,
+      "bounds_gap": 0.00019922941117641557,
+      "dropped_mass": 3.376160573406808e-13
+     }
+    }
+   ],
+   "complete": true
+  },
+  {
+   "level": 2,
+   "target_nats": 1.1,
+   "band_bits": [
+    1.63,
+    1.77
+   ],
+   "candidates": [
+    {
+     "seed": 1,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level"
+     ],
+     "topological_entropy_bits": 1.6280959286203023,
+     "synthesised_nats": 1.1090613099571571,
+     "n_edges": 25,
+     "unifilar": true,
+     "n_strings": 1689295137872654263,
+     "acceptance": 0.9824558580645191,
+     "mean_length": 9.897852470690442,
+     "string_entropy": 15.564079336151252,
+     "entropy": 1.428178568026181,
+     "ceiling": 0.4894664418603249,
+     "first_order_cross_entropy": 1.4861606768492701,
+     "first_order_gap": 0.057982108823089185,
+     "memory_gap": 0.05332823256520647,
+     "bounds_gap": 0.002343168684048555,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 2,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level"
+     ],
+     "topological_entropy_bits": 1.6014027028027218,
+     "synthesised_nats": 1.0778767908556308,
+     "n_edges": 23,
+     "unifilar": true,
+     "n_strings": 816087120723256630,
+     "acceptance": 0.9897801299363018,
+     "mean_length": 9.208997024775199,
+     "string_entropy": 14.944875357148845,
+     "entropy": 1.463892615590015,
+     "ceiling": 0.41189078785360267,
+     "first_order_cross_entropy": 1.6541941483904548,
+     "first_order_gap": 0.19030153280043982,
+     "memory_gap": 0.13249896258010252,
+     "bounds_gap": 0.0014516621750843863,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 3,
+     "admitted": false,
+     "reasons": [
+      "no pairs of states that can share a symbol"
+     ]
+    },
+    {
+     "seed": 4,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 1.6896715185068925,
+     "synthesised_nats": 1.0894200693801426,
+     "n_edges": 26,
+     "unifilar": true,
+     "n_strings": 4094129590473158451,
+     "acceptance": 0.9908531124784704,
+     "mean_length": 9.337397082436071,
+     "string_entropy": 16.68553965588645,
+     "entropy": 1.6140948754146534,
+     "ceiling": 0.3755926772626233,
+     "first_order_cross_entropy": 1.8169751579607207,
+     "first_order_gap": 0.20288028254606738,
+     "memory_gap": 0.09852683469297108,
+     "bounds_gap": 0.0012824206774741905,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 5,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 1.6400191731647649,
+     "synthesised_nats": 1.0926312135807386,
+     "n_edges": 25,
+     "unifilar": true,
+     "n_strings": 2066214129804863470,
+     "acceptance": 0.9972598662612144,
+     "mean_length": 7.590548215107047,
+     "string_entropy": 13.09906618894726,
+     "entropy": 1.5248230800813953,
+     "ceiling": 0.3890466217441685,
+     "first_order_cross_entropy": 1.5988549337517823,
+     "first_order_gap": 0.074031853670387,
+     "memory_gap": 0.06524666581862792,
+     "bounds_gap": 0.000460809169429172,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 6,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level"
+     ],
+     "topological_entropy_bits": 1.595004407480048,
+     "synthesised_nats": 1.0822380459078755,
+     "n_edges": 22,
+     "unifilar": true,
+     "n_strings": 688149852902459995,
+     "acceptance": 0.9851515490488223,
+     "mean_length": 9.745615683944841,
+     "string_entropy": 15.283603536094498,
+     "entropy": 1.422310641439552,
+     "ceiling": 0.43107716905497007,
+     "first_order_cross_entropy": 1.7541478566061035,
+     "first_order_gap": 0.3318372151665514,
+     "memory_gap": 0.1972600056272007,
+     "bounds_gap": 0.002008486012998374,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 7,
+     "admitted": false,
+     "reasons": [
+      "topological entropy outside the band of the level"
+     ],
+     "topological_entropy_bits": 1.6294633434021828,
+     "synthesised_nats": 1.1012466171148478,
+     "n_edges": 24,
+     "unifilar": true,
+     "n_strings": 1760169682493917486,
+     "acceptance": 0.9814019376838584,
+     "mean_length": 9.67535673632993,
+     "string_entropy": 14.613481469906416,
+     "entropy": 1.368898654241167,
+     "ceiling": 0.4734568415031574,
+     "first_order_cross_entropy": 1.502368831990793,
+     "first_order_gap": 0.1334701777496261,
+     "memory_gap": 0.09433288474425794,
+     "bounds_gap": 0.0025370557335528815,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 8,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 1.6448306776932693,
+     "synthesised_nats": 1.0959107818036185,
+     "n_edges": 25,
+     "unifilar": true,
+     "n_strings": 2462821700908501197,
+     "acceptance": 0.9808905591897391,
+     "mean_length": 10.884433432020925,
+     "string_entropy": 17.950292199607315,
+     "entropy": 1.5104036976001558,
+     "ceiling": 0.3925388832371397,
+     "first_order_cross_entropy": 1.6598481023243066,
+     "first_order_gap": 0.14944440472415077,
+     "memory_gap": 0.1262164063077036,
+     "bounds_gap": 0.0023422164212850774,
+     "dropped_mass": 0.0
+    }
+   ],
+   "admitted": [
+    {
+     "spec": {
+      "name": "level 3, grammar 4",
+      "level": 2,
+      "seed": 4,
+      "target_nats": 1.1,
+      "states": [
+       "B(0)",
+       "C",
+       "A",
+       "D",
+       "B(1)",
+       "E",
+       "F(0)",
+       "F(1)"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A",
+        "B(1)"
+       ],
+       [
+        "B(0)",
+        "A"
+       ],
+       [
+        "B(0)",
+        "B(0)"
+       ],
+       [
+        "B(0)",
+        "C"
+       ],
+       [
+        "B(0)",
+        "D"
+       ],
+       [
+        "B(0)",
+        "E"
+       ],
+       [
+        "B(0)",
+        "F(1)"
+       ],
+       [
+        "B(1)",
+        "A"
+       ],
+       [
+        "B(1)",
+        "B(1)"
+       ],
+       [
+        "B(1)",
+        "E"
+       ],
+       [
+        "C",
+        "B(1)"
+       ],
+       [
+        "C",
+        "F(1)"
+       ],
+       [
+        "D",
+        "B(0)"
+       ],
+       [
+        "D",
+        "D"
+       ],
+       [
+        "D",
+        "E"
+       ],
+       [
+        "D",
+        "F(0)"
+       ],
+       [
+        "E",
+        "B(1)"
+       ],
+       [
+        "E",
+        "C"
+       ],
+       [
+        "E",
+        "E"
+       ],
+       [
+        "E",
+        "F(0)"
+       ],
+       [
+        "F(0)",
+        "B(1)"
+       ],
+       [
+        "F(0)",
+        "C"
+       ],
+       [
+        "F(0)",
+        "E"
+       ],
+       [
+        "F(1)",
+        "B(1)"
+       ],
+       [
+        "F(1)",
+        "D"
+       ],
+       [
+        "F(1)",
+        "F(0)"
+       ]
+      ],
+      "start": "B(0)",
+      "terminals": [
+       "A",
+       "C",
+       "F(1)"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 1.6896715185068925,
+      "synthesised_nats": 1.0894200693801426,
+      "n_edges": 26,
+      "unifilar": true,
+      "n_strings": 4094129590473158451,
+      "acceptance": 0.9908531124784704,
+      "mean_length": 9.337397082436071,
+      "string_entropy": 16.68553965588645,
+      "entropy": 1.6140948754146534,
+      "ceiling": 0.3755926772626233,
+      "first_order_cross_entropy": 1.8169751579607207,
+      "first_order_gap": 0.20288028254606738,
+      "memory_gap": 0.09852683469297108,
+      "bounds_gap": 0.0012824206774741905,
+      "dropped_mass": 0.0
+     }
+    },
+    {
+     "spec": {
+      "name": "level 3, grammar 5",
+      "level": 2,
+      "seed": 5,
+      "target_nats": 1.1,
+      "states": [
+       "D",
+       "C(0)",
+       "F(0)",
+       "A",
+       "F(1)",
+       "B",
+       "E",
+       "C(1)"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A",
+        "A"
+       ],
+       [
+        "A",
+        "B"
+       ],
+       [
+        "A",
+        "C(1)"
+       ],
+       [
+        "A",
+        "F(0)"
+       ],
+       [
+        "B",
+        "B"
+       ],
+       [
+        "B",
+        "C(1)"
+       ],
+       [
+        "C(0)",
+        "C(0)"
+       ],
+       [
+        "C(0)",
+        "F(1)"
+       ],
+       [
+        "C(1)",
+        "B"
+       ],
+       [
+        "C(1)",
+        "C(1)"
+       ],
+       [
+        "C(1)",
+        "F(1)"
+       ],
+       [
+        "D",
+        "A"
+       ],
+       [
+        "D",
+        "B"
+       ],
+       [
+        "D",
+        "C(0)"
+       ],
+       [
+        "D",
+        "D"
+       ],
+       [
+        "E",
+        "A"
+       ],
+       [
+        "E",
+        "C(1)"
+       ],
+       [
+        "E",
+        "D"
+       ],
+       [
+        "E",
+        "F(1)"
+       ],
+       [
+        "F(0)",
+        "B"
+       ],
+       [
+        "F(0)",
+        "C(0)"
+       ],
+       [
+        "F(0)",
+        "E"
+       ],
+       [
+        "F(1)",
+        "A"
+       ],
+       [
+        "F(1)",
+        "E"
+       ],
+       [
+        "F(1)",
+        "F(1)"
+       ]
+      ],
+      "start": "C(1)",
+      "terminals": [
+       "B",
+       "D",
+       "F(1)"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 1.6400191731647649,
+      "synthesised_nats": 1.0926312135807386,
+      "n_edges": 25,
+      "unifilar": true,
+      "n_strings": 2066214129804863470,
+      "acceptance": 0.9972598662612144,
+      "mean_length": 7.590548215107047,
+      "string_entropy": 13.09906618894726,
+      "entropy": 1.5248230800813953,
+      "ceiling": 0.3890466217441685,
+      "first_order_cross_entropy": 1.5988549337517823,
+      "first_order_gap": 0.074031853670387,
+      "memory_gap": 0.06524666581862792,
+      "bounds_gap": 0.000460809169429172,
+      "dropped_mass": 0.0
+     }
+    },
+    {
+     "spec": {
+      "name": "level 3, grammar 8",
+      "level": 2,
+      "seed": 8,
+      "target_nats": 1.1,
+      "states": [
+       "A(0)",
+       "E(0)",
+       "D",
+       "A(1)",
+       "F",
+       "E(1)",
+       "B",
+       "C"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A(0)",
+        "A(1)"
+       ],
+       [
+        "A(0)",
+        "C"
+       ],
+       [
+        "A(0)",
+        "D"
+       ],
+       [
+        "A(0)",
+        "E(0)"
+       ],
+       [
+        "A(1)",
+        "A(1)"
+       ],
+       [
+        "A(1)",
+        "B"
+       ],
+       [
+        "A(1)",
+        "D"
+       ],
+       [
+        "A(1)",
+        "F"
+       ],
+       [
+        "B",
+        "A(0)"
+       ],
+       [
+        "B",
+        "B"
+       ],
+       [
+        "B",
+        "D"
+       ],
+       [
+        "B",
+        "E(1)"
+       ],
+       [
+        "C",
+        "A(0)"
+       ],
+       [
+        "C",
+        "B"
+       ],
+       [
+        "C",
+        "C"
+       ],
+       [
+        "C",
+        "F"
+       ],
+       [
+        "D",
+        "A(1)"
+       ],
+       [
+        "D",
+        "D"
+       ],
+       [
+        "D",
+        "F"
+       ],
+       [
+        "E(0)",
+        "E(0)"
+       ],
+       [
+        "E(0)",
+        "F"
+       ],
+       [
+        "E(1)",
+        "C"
+       ],
+       [
+        "E(1)",
+        "D"
+       ],
+       [
+        "F",
+        "D"
+       ],
+       [
+        "F",
+        "E(0)"
+       ]
+      ],
+      "start": "A(1)",
+      "terminals": [
+       "A(0)",
+       "E(1)",
+       "F"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 1.6448306776932693,
+      "synthesised_nats": 1.0959107818036185,
+      "n_edges": 25,
+      "unifilar": true,
+      "n_strings": 2462821700908501197,
+      "acceptance": 0.9808905591897391,
+      "mean_length": 10.884433432020925,
+      "string_entropy": 17.950292199607315,
+      "entropy": 1.5104036976001558,
+      "ceiling": 0.3925388832371397,
+      "first_order_cross_entropy": 1.6598481023243066,
+      "first_order_gap": 0.14944440472415077,
+      "memory_gap": 0.1262164063077036,
+      "bounds_gap": 0.0023422164212850774,
+      "dropped_mass": 0.0
+     }
+    }
+   ],
+   "complete": true
+  },
+  {
+   "level": 3,
+   "target_nats": 1.4,
+   "band_bits": [
+    2.0,
+    2.12
+   ],
+   "candidates": [
+    {
+     "seed": 1,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 2.0496007557673463,
+     "synthesised_nats": 1.406859965860924,
+     "n_edges": 30,
+     "unifilar": true,
+     "n_strings": 207002388160676954674434,
+     "acceptance": 0.966843092016696,
+     "mean_length": 10.11562323807311,
+     "string_entropy": 20.800034061629965,
+     "entropy": 1.8712431697384198,
+     "ceiling": 0.3309670938929448,
+     "first_order_cross_entropy": 2.090257533958919,
+     "first_order_gap": 0.21901436422049936,
+     "memory_gap": 0.08941237613373754,
+     "bounds_gap": 0.00437639155803324,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 2,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 2.065628569551152,
+     "synthesised_nats": 1.4104581667690943,
+     "n_edges": 32,
+     "unifilar": true,
+     "n_strings": 384674738901770470233037,
+     "acceptance": 0.9779152315317219,
+     "mean_length": 10.582566322711866,
+     "string_entropy": 22.34387952804744,
+     "entropy": 1.9290957552502055,
+     "ceiling": 0.31282849566381804,
+     "first_order_cross_entropy": 2.1447756971257688,
+     "first_order_gap": 0.21567994187556327,
+     "memory_gap": 0.19437040193972188,
+     "bounds_gap": 0.002781653071855918,
+     "dropped_mass": 0.0
+    },
+    {
+     "seed": 3,
+     "admitted": false,
+     "reasons": [
+      "no pairs of states that can share a symbol"
+     ]
+    },
+    {
+     "seed": 4,
+     "admitted": false,
+     "reasons": [
+      "no pairs of states that can share a symbol"
+     ]
+    },
+    {
+     "seed": 5,
+     "admitted": false,
+     "reasons": [
+      "no pairs of states that can share a symbol"
+     ]
+    },
+    {
+     "seed": 6,
+     "admitted": true,
+     "reasons": [],
+     "topological_entropy_bits": 2.023701267727162,
+     "synthesised_nats": 1.3840270691280303,
+     "n_edges": 31,
+     "unifilar": true,
+     "n_strings": 114675396634666290536205,
+     "acceptance": 0.9500707599563868,
+     "mean_length": 12.350550719229659,
+     "string_entropy": 25.585568824649595,
+     "entropy": 1.916442951510386,
+     "ceiling": 0.3123709080974421,
+     "first_order_cross_entropy": 2.0213131007914957,
+     "first_order_gap": 0.10487014928110971,
+     "memory_gap": 0.09157314568656982,
+     "bounds_gap": 0.005534837405934358,
+     "dropped_mass": 0.0
+    }
+   ],
+   "admitted": [
+    {
+     "spec": {
+      "name": "level 4, grammar 1",
+      "level": 3,
+      "seed": 1,
+      "target_nats": 1.4,
+      "states": [
+       "C(0)",
+       "F",
+       "C(1)",
+       "B(0)",
+       "B(1)",
+       "A",
+       "D",
+       "E"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A",
+        "B(1)"
+       ],
+       [
+        "A",
+        "C(0)"
+       ],
+       [
+        "A",
+        "D"
+       ],
+       [
+        "B(0)",
+        "A"
+       ],
+       [
+        "B(0)",
+        "C(0)"
+       ],
+       [
+        "B(0)",
+        "F"
+       ],
+       [
+        "B(1)",
+        "A"
+       ],
+       [
+        "B(1)",
+        "B(1)"
+       ],
+       [
+        "B(1)",
+        "C(0)"
+       ],
+       [
+        "B(1)",
+        "E"
+       ],
+       [
+        "B(1)",
+        "F"
+       ],
+       [
+        "C(0)",
+        "A"
+       ],
+       [
+        "C(0)",
+        "B(1)"
+       ],
+       [
+        "C(0)",
+        "C(0)"
+       ],
+       [
+        "C(0)",
+        "D"
+       ],
+       [
+        "C(0)",
+        "F"
+       ],
+       [
+        "C(1)",
+        "B(0)"
+       ],
+       [
+        "C(1)",
+        "C(0)"
+       ],
+       [
+        "C(1)",
+        "E"
+       ],
+       [
+        "D",
+        "A"
+       ],
+       [
+        "D",
+        "C(0)"
+       ],
+       [
+        "D",
+        "F"
+       ],
+       [
+        "E",
+        "B(0)"
+       ],
+       [
+        "E",
+        "C(0)"
+       ],
+       [
+        "F",
+        "A"
+       ],
+       [
+        "F",
+        "B(0)"
+       ],
+       [
+        "F",
+        "C(1)"
+       ],
+       [
+        "F",
+        "D"
+       ],
+       [
+        "F",
+        "E"
+       ],
+       [
+        "F",
+        "F"
+       ]
+      ],
+      "start": "C(1)",
+      "terminals": [
+       "B(0)",
+       "C(0)",
+       "E"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 2.0496007557673463,
+      "synthesised_nats": 1.406859965860924,
+      "n_edges": 30,
+      "unifilar": true,
+      "n_strings": 207002388160676954674434,
+      "acceptance": 0.966843092016696,
+      "mean_length": 10.11562323807311,
+      "string_entropy": 20.800034061629965,
+      "entropy": 1.8712431697384198,
+      "ceiling": 0.3309670938929448,
+      "first_order_cross_entropy": 2.090257533958919,
+      "first_order_gap": 0.21901436422049936,
+      "memory_gap": 0.08941237613373754,
+      "bounds_gap": 0.00437639155803324,
+      "dropped_mass": 0.0
+     }
+    },
+    {
+     "spec": {
+      "name": "level 4, grammar 2",
+      "level": 3,
+      "seed": 2,
+      "target_nats": 1.4,
+      "states": [
+       "A",
+       "F",
+       "B",
+       "E(0)",
+       "E(1)",
+       "D(0)",
+       "C",
+       "D(1)"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A",
+        "A"
+       ],
+       [
+        "A",
+        "B"
+       ],
+       [
+        "A",
+        "C"
+       ],
+       [
+        "A",
+        "D(0)"
+       ],
+       [
+        "B",
+        "A"
+       ],
+       [
+        "B",
+        "B"
+       ],
+       [
+        "B",
+        "C"
+       ],
+       [
+        "B",
+        "D(0)"
+       ],
+       [
+        "B",
+        "E(0)"
+       ],
+       [
+        "B",
+        "F"
+       ],
+       [
+        "C",
+        "A"
+       ],
+       [
+        "C",
+        "B"
+       ],
+       [
+        "C",
+        "D(1)"
+       ],
+       [
+        "C",
+        "E(0)"
+       ],
+       [
+        "C",
+        "F"
+       ],
+       [
+        "D(0)",
+        "C"
+       ],
+       [
+        "D(0)",
+        "D(1)"
+       ],
+       [
+        "D(1)",
+        "A"
+       ],
+       [
+        "D(1)",
+        "B"
+       ],
+       [
+        "D(1)",
+        "E(1)"
+       ],
+       [
+        "D(1)",
+        "F"
+       ],
+       [
+        "E(0)",
+        "B"
+       ],
+       [
+        "E(0)",
+        "D(0)"
+       ],
+       [
+        "E(0)",
+        "E(0)"
+       ],
+       [
+        "E(1)",
+        "A"
+       ],
+       [
+        "E(1)",
+        "B"
+       ],
+       [
+        "E(1)",
+        "D(0)"
+       ],
+       [
+        "E(1)",
+        "E(1)"
+       ],
+       [
+        "E(1)",
+        "F"
+       ],
+       [
+        "F",
+        "A"
+       ],
+       [
+        "F",
+        "B"
+       ],
+       [
+        "F",
+        "D(1)"
+       ]
+      ],
+      "start": "A",
+      "terminals": [
+       "C",
+       "D(0)",
+       "F"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 2.065628569551152,
+      "synthesised_nats": 1.4104581667690943,
+      "n_edges": 32,
+      "unifilar": true,
+      "n_strings": 384674738901770470233037,
+      "acceptance": 0.9779152315317219,
+      "mean_length": 10.582566322711866,
+      "string_entropy": 22.34387952804744,
+      "entropy": 1.9290957552502055,
+      "ceiling": 0.31282849566381804,
+      "first_order_cross_entropy": 2.1447756971257688,
+      "first_order_gap": 0.21567994187556327,
+      "memory_gap": 0.19437040193972188,
+      "bounds_gap": 0.002781653071855918,
+      "dropped_mass": 0.0
+     }
+    },
+    {
+     "spec": {
+      "name": "level 4, grammar 6",
+      "level": 3,
+      "seed": 6,
+      "target_nats": 1.4,
+      "states": [
+       "D(0)",
+       "B",
+       "F(0)",
+       "A",
+       "F(1)",
+       "E",
+       "C",
+       "D(1)"
+      ],
+      "alphabet": [
+       "A",
+       "B",
+       "C",
+       "D",
+       "E",
+       "F"
+      ],
+      "edges": [
+       [
+        "A",
+        "A"
+       ],
+       [
+        "A",
+        "D(1)"
+       ],
+       [
+        "A",
+        "E"
+       ],
+       [
+        "A",
+        "F(0)"
+       ],
+       [
+        "B",
+        "A"
+       ],
+       [
+        "B",
+        "B"
+       ],
+       [
+        "B",
+        "C"
+       ],
+       [
+        "B",
+        "E"
+       ],
+       [
+        "B",
+        "F(1)"
+       ],
+       [
+        "C",
+        "A"
+       ],
+       [
+        "C",
+        "C"
+       ],
+       [
+        "C",
+        "F(0)"
+       ],
+       [
+        "D(0)",
+        "A"
+       ],
+       [
+        "D(0)",
+        "B"
+       ],
+       [
+        "D(0)",
+        "C"
+       ],
+       [
+        "D(0)",
+        "D(0)"
+       ],
+       [
+        "D(1)",
+        "A"
+       ],
+       [
+        "D(1)",
+        "D(0)"
+       ],
+       [
+        "D(1)",
+        "E"
+       ],
+       [
+        "D(1)",
+        "F(1)"
+       ],
+       [
+        "E",
+        "B"
+       ],
+       [
+        "E",
+        "D(0)"
+       ],
+       [
+        "E",
+        "F(0)"
+       ],
+       [
+        "F(0)",
+        "B"
+       ],
+       [
+        "F(0)",
+        "C"
+       ],
+       [
+        "F(0)",
+        "D(0)"
+       ],
+       [
+        "F(0)",
+        "E"
+       ],
+       [
+        "F(0)",
+        "F(0)"
+       ],
+       [
+        "F(1)",
+        "B"
+       ],
+       [
+        "F(1)",
+        "D(0)"
+       ],
+       [
+        "F(1)",
+        "F(0)"
+       ]
+      ],
+      "start": "E",
+      "terminals": [
+       "B",
+       "C",
+       "F(1)"
+      ]
+     },
+     "values": {
+      "topological_entropy_bits": 2.023701267727162,
+      "synthesised_nats": 1.3840270691280303,
+      "n_edges": 31,
+      "unifilar": true,
+      "n_strings": 114675396634666290536205,
+      "acceptance": 0.9500707599563868,
+      "mean_length": 12.350550719229659,
+      "string_entropy": 25.585568824649595,
+      "entropy": 1.916442951510386,
+      "ceiling": 0.3123709080974421,
+      "first_order_cross_entropy": 2.0213131007914957,
+      "first_order_gap": 0.10487014928110971,
+      "memory_gap": 0.09157314568656982,
+      "bounds_gap": 0.005534837405934358,
+      "dropped_mass": 0.0
+     }
+    }
+   ],
+   "complete": true
+  }
+ ]
+}

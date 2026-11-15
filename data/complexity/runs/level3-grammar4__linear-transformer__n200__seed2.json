@@ -1,0 +1,496 @@
+{
+ "kind": "production",
+ "experiment": "complexity",
+ "grammar": {
+  "name": "level 3, grammar 4",
+  "level": 2,
+  "seed": 4,
+  "target_nats": 1.1,
+  "states": [
+   "B(0)",
+   "C",
+   "A",
+   "D",
+   "B(1)",
+   "E",
+   "F(0)",
+   "F(1)"
+  ],
+  "alphabet": [
+   "A",
+   "B",
+   "C",
+   "D",
+   "E",
+   "F"
+  ],
+  "edges": [
+   [
+    "A",
+    "B(1)"
+   ],
+   [
+    "B(0)",
+    "A"
+   ],
+   [
+    "B(0)",
+    "B(0)"
+   ],
+   [
+    "B(0)",
+    "C"
+   ],
+   [
+    "B(0)",
+    "D"
+   ],
+   [
+    "B(0)",
+    "E"
+   ],
+   [
+    "B(0)",
+    "F(1)"
+   ],
+   [
+    "B(1)",
+    "A"
+   ],
+   [
+    "B(1)",
+    "B(1)"
+   ],
+   [
+    "B(1)",
+    "E"
+   ],
+   [
+    "C",
+    "B(1)"
+   ],
+   [
+    "C",
+    "F(1)"
+   ],
+   [
+    "D",
+    "B(0)"
+   ],
+   [
+    "D",
+    "D"
+   ],
+   [
+    "D",
+    "E"
+   ],
+   [
+    "D",
+    "F(0)"
+   ],
+   [
+    "E",
+    "B(1)"
+   ],
+   [
+    "E",
+    "C"
+   ],
+   [
+    "E",
+    "E"
+   ],
+   [
+    "E",
+    "F(0)"
+   ],
+   [
+    "F(0)",
+    "B(1)"
+   ],
+   [
+    "F(0)",
+    "C"
+   ],
+   [
+    "F(0)",
+    "E"
+   ],
+   [
+    "F(1)",
+    "B(1)"
+   ],
+   [
+    "F(1)",
+    "D"
+   ],
+   [
+    "F(1)",
+    "F(0)"
+   ]
+  ],
+  "start": "B(0)",
+  "terminals": [
+   "A",
+   "C",
+   "F(1)"
+  ]
+ },
+ "grammar_values": {
+  "topological_entropy_bits": 1.6896715185068925,
+  "synthesised_nats": 1.0894200693801426,
+  "n_edges": 26,
+  "unifilar": true,
+  "n_strings": 4094129590473158451,
+  "acceptance": 0.9908531124784704,
+  "mean_length": 9.337397082436071,
+  "string_entropy": 16.68553965588645,
+  "entropy": 1.6140948754146534,
+  "ceiling": 0.3755926772626233,
+  "first_order_cross_entropy": 1.8169751579607207,
+  "first_order_gap": 0.20288028254606738,
+  "memory_gap": 0.09852683469297108,
+  "bounds_gap": 0.0012824206774741905,
+  "dropped_mass": 0.0
+ },
+ "level": 2,
+ "model": "linear transformer",
+ "seed": 2,
+ "n_train": 200,
+ "settings": {
+  "n_states": 8,
+  "alphabet_size": 6,
+  "n_terminal_states": 3,
+  "min_length": 2,
+  "max_length": 40,
+  "levels": [
+   {
+    "target_nats": 0.8,
+    "band_bits": [
+     1.26,
+     1.42
+    ]
+   },
+   {
+    "target_nats": 1.0,
+    "band_bits": [
+     1.45,
+     1.6
+    ]
+   },
+   {
+    "target_nats": 1.1,
+    "band_bits": [
+     1.63,
+     1.77
+    ]
+   },
+   {
+    "target_nats": 1.4,
+    "band_bits": [
+     2.0,
+     2.12
+    ]
+   }
+  ],
+  "grammars_per_level": 3,
+  "first_grammar_seed": 1,
+  "max_candidates": 80,
+  "min_memory_gap_bits": 0.05,
+  "min_strings": 1000,
+  "sizes": [
+   50,
+   200,
+   800
+  ],
+  "training_sample": "draws",
+  "validation_fraction": 0.2,
+  "n_heldout": 200,
+  "max_draws": 100000,
+  "max_steps": 2000,
+  "eval_every": 50,
+  "seeds": [
+   1,
+   2
+  ]
+ },
+ "network": {
+  "sample_length": 40,
+  "n_train": 2000,
+  "n_heldout": 500,
+  "batch_size": 32,
+  "epochs": 30,
+  "learning_rate": 0.001,
+  "parameter_budget": 20000,
+  "transformer_width": 32,
+  "transformer_heads": 4,
+  "transformer_layers": 2,
+  "targets": "seqbench",
+  "threads": 1
+ },
+ "n_parameters": 19991,
+ "model_size": {
+  "hidden units per block": 72
+ },
+ "n_classes": 7,
+ "data": {
+  "n_gradient": 147,
+  "n_validation": 53,
+  "n_distinct_training": 152,
+  "n_distinct_validation": 30,
+  "n_heldout": 200,
+  "n_ungrammatical": 200,
+  "n_targets_heldout": 2945,
+  "mean_length_training": 9.415,
+  "mean_length_heldout": 13.725,
+  "distinct_ungrammatical": 200,
+  "draws": 1117,
+  "training_mass": 0.32634920473909296,
+  "run_seed": 530033080
+ },
+ "history": {
+  "step": [
+   0,
+   50,
+   100,
+   150,
+   200,
+   250,
+   300,
+   350,
+   400,
+   450,
+   500,
+   550,
+   600,
+   650,
+   700,
+   750,
+   800,
+   850,
+   900,
+   950,
+   1000,
+   1050,
+   1100,
+   1150,
+   1200,
+   1250,
+   1300,
+   1350,
+   1400,
+   1450,
+   1500,
+   1550,
+   1600,
+   1650,
+   1700,
+   1750,
+   1800,
+   1850,
+   1900,
+   1950,
+   2000
+  ],
+  "train_loss": [
+   null,
+   2.085654523543278,
+   1.7268648917353409,
+   1.636539046278405,
+   1.5682805836845295,
+   1.4841644160523595,
+   1.399619311650152,
+   1.3257743658453507,
+   1.259227404079975,
+   1.1741920596918303,
+   1.1040077680502967,
+   1.0306256791537622,
+   0.9818952188286831,
+   0.909773809198289,
+   0.8428952253260401,
+   0.810608966135141,
+   0.7663186764978449,
+   0.7448274699117051,
+   0.7182832900756205,
+   0.6891674596805771,
+   0.6894930520757111,
+   0.6870635572164759,
+   0.6664194864336044,
+   0.6674971004868601,
+   0.6635993381424138,
+   0.6531777974587984,
+   0.6561478286302159,
+   0.6479513650869333,
+   0.6486207361826167,
+   0.6502963072556115,
+   0.6485488672125609,
+   0.6404802555719298,
+   0.645233312576601,
+   0.6504451204037501,
+   0.6445804844921041,
+   0.6427353067085683,
+   0.6458366681317507,
+   0.641946441207152,
+   0.6334112122575927,
+   0.6423209833043746,
+   0.6360254225032473
+  ],
+  "validation_loss": [
+   2.8928716710557607,
+   1.8795868684420278,
+   1.8404561718391657,
+   1.8303437639510833,
+   1.8710642681785212,
+   1.980367154003776,
+   2.110161944661985,
+   2.185293253622006,
+   2.3290667941423444,
+   2.456850075716062,
+   2.728325378033609,
+   2.854830828511416,
+   3.054615506782103,
+   3.253929984485331,
+   3.5176179123718097,
+   3.6175439601067225,
+   3.824524392489509,
+   3.8952605128240805,
+   4.087810912868874,
+   4.198773087309653,
+   4.325402537278732,
+   4.329805637106122,
+   4.416828170512099,
+   4.404016494918726,
+   4.51265552771165,
+   4.566722057628692,
+   4.54445649571739,
+   4.604110054030362,
+   4.674973441526572,
+   4.631346258516902,
+   4.709291203645038,
+   4.6629865947267355,
+   4.671747390961688,
+   4.747528450376668,
+   4.7660413508461446,
+   4.849779015620642,
+   4.7866699818865355,
+   4.723137526866004,
+   4.7772780093229175,
+   4.767405517232788,
+   4.770418653275905
+  ],
+  "divergence_bits": [
+   1.213807184309478,
+   0.24371240583573087,
+   0.20213830120536028,
+   0.22142102784234632,
+   0.2550350624795114,
+   0.3373295620347366,
+   0.4797135730680975,
+   0.5880656004630737,
+   0.6604901151540367,
+   0.8539921731120993,
+   1.0570664891837953,
+   1.2602951033475993,
+   1.4795125946320047,
+   1.643223765961959,
+   1.841386823709249,
+   1.9766645225609691,
+   2.350358924392486,
+   2.350560880850671,
+   2.5883230842641516,
+   2.720669201588966,
+   2.808008433222172,
+   2.8543214039731066,
+   2.9330030683151187,
+   2.957161547416754,
+   3.0614445699827524,
+   3.079732305884306,
+   3.1377869503784317,
+   3.1770614346815855,
+   3.2899825457312057,
+   3.2470774757290783,
+   3.2524511063718085,
+   3.298670306717786,
+   3.311830154519908,
+   3.389916708226019,
+   3.4126328827529506,
+   3.43417699339789,
+   3.398612355173531,
+   3.399150592980502,
+   3.4596375917268496,
+   3.4371729889156932,
+   3.466950989607382
+  ]
+ },
+ "best_step": 150,
+ "best_is_last": false,
+ "measures": {
+  "divergence_bits": 0.22142102784234632,
+  "score": 0.8109052993365328,
+  "top_choice_ratio": 0.9773896959330056,
+  "auc": 0.9706625,
+  "validation_loss": 1.8303437639510833
+ },
+ "first_order": {
+  "divergence_bits": 0.22362411011861838,
+  "score": 0.8090238557011737,
+  "top_choice_ratio": 0.9933317408643237,
+  "auc": 0.9153625
+ },
+ "references": {
+  "walk_without_bounds": 0.000999211332085937,
+  "counted_transitions": 0.00824199584352693,
+  "uniform_guess": 1.1709531100842983
+ },
+ "reference_scores": {
+  "walk_without_bounds": 0.9991466683648724,
+  "counted_transitions": 0.9929612930077674
+ },
+ "exact": {
+  "divergence_bits": 0.0,
+  "score": 1.0,
+  "top_choice_ratio": 1.0,
+  "auc": 1.0,
+  "ungrammatical_possible": 0,
+  "largest_row_error": 2.220446049250313e-16,
+  "mean_entropy_bits": 1.636401811973306
+ },
+ "weights_sha256": "738f82361a902dc6f2b9ca579caffb4db3000762950d404f5e989a5871b122e0",
+ "checks": {
+  "uniform guess: divergence is log2 of the outcomes minus the mean entropy of the exact predictor": true,
+  "uniform guess: divergence is positive": true,
+  "exact predictor: score is 1": true,
+  "no score exceeds 1": true,
+  "every score is 1 minus the divergence over that of the uniform guess": true,
+  "exact predictor: area under the curve is 1": true,
+  "exact predictor: divergence is 0": true,
+  "exact predictor: first choice is the best achievable": true,
+  "exact predictor: no ungrammatical string is possible": true,
+  "exact predictor: distributions sum to one": true,
+  "divergence is never negative": true,
+  "first choice never beats the best achievable": true,
+  "area under the curve lies between 0 and 1": true,
+  "numbers of strings are those of the settings": true,
+  "passed": true
+ },
+ "seconds": {
+  "data": 0.22960735100787133,
+  "training": 118.05535017202783,
+  "evaluation": 8.38182412594324,
+  "total": 126.56086509799934
+ },
+ "environment": {
+  "python": "3.11.11",
+  "torch": "2.11.0+cpu",
+  "numpy": "1.26.4",
+  "symseq": "6c3d7236a276deebf8b3f26cbbaf92687f97de5b",
+  "machine": "x86_64",
+  "system": "Linux",
+  "threads": 1,
+  "speed_probe_us": [
+   88.3,
+   7.5
+  ]
+ }
+}

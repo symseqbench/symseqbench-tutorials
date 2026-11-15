@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="253.19952pt" height="217.199516pt" viewBox="0 0 253.19952 217.199516" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-13T08:00:17.991720</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 217.199516 
+L 253.19952 217.199516 
+L 253.19952 0 
+L 0 0 
+L 0 217.199516 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 25.6 188.721586 
+L 249.59952 188.721586 
+L 249.59952 5.100941 
+L 25.6 5.100941 
+L 25.6 188.721586 
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m9b0bd9f2c3" d="M 0 0 
+L 0 3 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m9b0bd9f2c3" x="25.6" y="188.721586" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <!-- $\mathdefault{0}$ -->
+      <g transform="translate(23.85 200.157133)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">0</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m9b0bd9f2c3" x="51.952885" y="188.721586" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <!-- $\mathdefault{1}$ -->
+      <g transform="translate(50.202885 200.157133)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">1</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m9b0bd9f2c3" x="78.305769" y="188.721586" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <!-- $\mathdefault{2}$ -->
+      <g transform="translate(76.555769 200.157133)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">2</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m9b0bd9f2c3" x="104.658654" y="188.721586" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <!-- $\mathdefault{3}$ -->
+      <g transform="translate(102.908654 200.157133)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">3</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m9b0bd9f2c3" x="131.011539" y="188.721586" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <!-- $\mathdefault{4}$ -->
+      <g transform="translate(129.261539 200.157133)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">4</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m9b0bd9f2c3" x="157.364424" y="188.721586" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <!-- $\mathdefault{5}$ -->
+      <g transform="translate(155.614424 200.157133)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">5</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#m9b0bd9f2c3" x="183.717308" y="188.721586" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <!-- $\mathdefault{6}$ -->
+      <g transform="translate(181.967308 200.157133)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">6</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m9b0bd9f2c3" x="210.070193" y="188.721586" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <!-- $\mathdefault{7}$ -->
+      <g transform="translate(208.320193 200.157133)">
+       <text>
+        <tspan x="0" y="-0.265625" style="font-size: 7px; font-family: 'cmr10'">7</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#m9b0bd9f2c3" x="236.423078" y="188.721586" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <!-- $\mathdefault{8}$ -->
+      <g transform="translate(234.673078 200.157133)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">8</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="text_10">
+     <!-- block length $L$ (symbols) -->
+     <g transform="translate(93.75976 211.599516)">
+      <text>
+       <tspan x="0" y="-0" style="font-size: 8px; font-family: 'cmr10'">b</tspan>
+       <tspan x="4.441406" y="-0" style="font-size: 8px; font-family: 'cmr10'">l</tspan>
+       <tspan x="6.65625" y="-0" style="font-size: 8px; font-family: 'cmr10'">o</tspan>
+       <tspan x="10.65625" y="-0" style="font-size: 8px; font-family: 'cmr10'">c</tspan>
+       <tspan x="14.207031" y="-0" style="font-size: 8px; font-family: 'cmr10'">k</tspan>
+       <tspan x="18.421875" y="-0" style="font-size: 8px; font-family: 'cmr10'"> </tspan>
+       <tspan x="21.085938" y="-0" style="font-size: 8px; font-family: 'cmr10'">l</tspan>
+       <tspan x="23.300781" y="-0" style="font-size: 8px; font-family: 'cmr10'">e</tspan>
+       <tspan x="26.851562" y="-0" style="font-size: 8px; font-family: 'cmr10'">n</tspan>
+       <tspan x="31.292969" y="-0" style="font-size: 8px; font-family: 'cmr10'">g</tspan>
+       <tspan x="35.292969" y="-0" style="font-size: 8px; font-family: 'cmr10'">t</tspan>
+       <tspan x="38.398438" y="-0" style="font-size: 8px; font-family: 'cmr10'">h</tspan>
+       <tspan x="42.839844" y="-0" style="font-size: 8px; font-family: 'cmr10'"> </tspan>
+       <tspan x="50.945312" y="-0" style="font-size: 8px; font-family: 'cmr10'"> </tspan>
+       <tspan x="53.609375" y="-0" style="font-size: 8px; font-family: 'cmr10'">(</tspan>
+       <tspan x="56.714844" y="-0" style="font-size: 8px; font-family: 'cmr10'">s</tspan>
+       <tspan x="59.867188" y="-0" style="font-size: 8px; font-family: 'cmr10'">y</tspan>
+       <tspan x="64.082031" y="-0" style="font-size: 8px; font-family: 'cmr10'">m</tspan>
+       <tspan x="70.746094" y="-0" style="font-size: 8px; font-family: 'cmr10'">b</tspan>
+       <tspan x="75.1875" y="-0" style="font-size: 8px; font-family: 'cmr10'">o</tspan>
+       <tspan x="79.1875" y="-0" style="font-size: 8px; font-family: 'cmr10'">l</tspan>
+       <tspan x="81.402344" y="-0" style="font-size: 8px; font-family: 'cmr10'">s</tspan>
+       <tspan x="84.554688" y="-0" style="font-size: 8px; font-family: 'cmr10'">)</tspan>
+       <tspan x="45.503906" y="-0" style="font-size: 8px; font-family: 'cmmi10'">L</tspan>
+      </text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_10">
+      <defs>
+       <path id="md9aecf6fad" d="M 0 0 
+L -3 0 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#md9aecf6fad" x="25.6" y="188.721586" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <!-- $\mathdefault{0}$ -->
+      <g transform="translate(15.6 191.189359)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">0</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_11">
+      <g>
+       <use xlink:href="#md9aecf6fad" x="25.6" y="158.279284" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <!-- $\mathdefault{1}$ -->
+      <g transform="translate(15.6 160.747057)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">1</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#md9aecf6fad" x="25.6" y="127.836982" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <!-- $\mathdefault{2}$ -->
+      <g transform="translate(15.6 130.304755)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">2</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_13">
+      <g>
+       <use xlink:href="#md9aecf6fad" x="25.6" y="97.39468" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <!-- $\mathdefault{3}$ -->
+      <g transform="translate(15.6 99.862453)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">3</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#md9aecf6fad" x="25.6" y="66.952378" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_15">
+      <!-- $\mathdefault{4}$ -->
+      <g transform="translate(15.6 69.420151)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">4</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_15">
+      <g>
+       <use xlink:href="#md9aecf6fad" x="25.6" y="36.510076" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_16">
+      <!-- $\mathdefault{5}$ -->
+      <g transform="translate(15.6 38.977849)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">5</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_16">
+      <g>
+       <use xlink:href="#md9aecf6fad" x="25.6" y="6.067773" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_17">
+      <!-- $\mathdefault{6}$ -->
+      <g transform="translate(15.6 8.535547)">
+       <text>
+        <tspan x="0" y="-0.34375" style="font-size: 7px; font-family: 'cmr10'">6</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="text_18">
+     <!-- block entropy $H(L)$ (bits) -->
+     <g transform="translate(9.6 142.311263) rotate(-90)">
+      <text>
+       <tspan x="0" y="-0" style="font-size: 8px; font-family: 'cmr10'">b</tspan>
+       <tspan x="4.441406" y="-0" style="font-size: 8px; font-family: 'cmr10'">l</tspan>
+       <tspan x="6.65625" y="-0" style="font-size: 8px; font-family: 'cmr10'">o</tspan>
+       <tspan x="10.65625" y="-0" style="font-size: 8px; font-family: 'cmr10'">c</tspan>
+       <tspan x="14.207031" y="-0" style="font-size: 8px; font-family: 'cmr10'">k</tspan>
+       <tspan x="18.421875" y="-0" style="font-size: 8px; font-family: 'cmr10'"> </tspan>
+       <tspan x="21.085938" y="-0" style="font-size: 8px; font-family: 'cmr10'">e</tspan>
+       <tspan x="24.636719" y="-0" style="font-size: 8px; font-family: 'cmr10'">n</tspan>
+       <tspan x="29.078125" y="-0" style="font-size: 8px; font-family: 'cmr10'">t</tspan>
+       <tspan x="32.183594" y="-0" style="font-size: 8px; font-family: 'cmr10'">r</tspan>
+       <tspan x="35.3125" y="-0" style="font-size: 8px; font-family: 'cmr10'">o</tspan>
+       <tspan x="39.3125" y="-0" style="font-size: 8px; font-family: 'cmr10'">p</tspan>
+       <tspan x="43.753906" y="-0" style="font-size: 8px; font-family: 'cmr10'">y</tspan>
+       <tspan x="47.96875" y="-0" style="font-size: 8px; font-family: 'cmr10'"> </tspan>
+       <tspan x="57.28125" y="-0" style="font-size: 8px; font-family: 'cmr10'">(</tspan>
+       <tspan x="65.828125" y="-0" style="font-size: 8px; font-family: 'cmr10'">)</tspan>
+       <tspan x="68.933594" y="-0" style="font-size: 8px; font-family: 'cmr10'"> </tspan>
+       <tspan x="71.597656" y="-0" style="font-size: 8px; font-family: 'cmr10'">(</tspan>
+       <tspan x="74.703125" y="-0" style="font-size: 8px; font-family: 'cmr10'">b</tspan>
+       <tspan x="79.144531" y="-0" style="font-size: 8px; font-family: 'cmr10'">i</tspan>
+       <tspan x="81.359375" y="-0" style="font-size: 8px; font-family: 'cmr10'">t</tspan>
+       <tspan x="84.464844" y="-0" style="font-size: 8px; font-family: 'cmr10'">s</tspan>
+       <tspan x="87.617188" y="-0" style="font-size: 8px; font-family: 'cmr10'">)</tspan>
+       <tspan x="50.632812" y="-0" style="font-size: 8px; font-family: 'cmmi10'">H</tspan>
+       <tspan x="60.386719" y="-0" style="font-size: 8px; font-family: 'cmmi10'">L</tspan>
+      </text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_17">
+    <path d="M 25.6 181.061415 
+L 236.423078 18.70247 
+" clip-path="url(#pc5b5b84012)" style="fill: none; stroke: #737373; stroke-width: 1.2; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_18">
+    <defs>
+     <path id="m051ed5f9fb" d="M 0 2 
+C 0.530406 2 1.03916 1.789267 1.414214 1.414214 
+C 1.789267 1.03916 2 0.530406 2 0 
+C 2 -0.530406 1.789267 -1.03916 1.414214 -1.414214 
+C 1.03916 -1.789267 0.530406 -2 0 -2 
+C -0.530406 -2 -1.03916 -1.789267 -1.414214 -1.414214 
+C -1.789267 -1.03916 -2 -0.530406 -2 0 
+C -2 0.530406 -1.789267 1.03916 -1.414214 1.414214 
+C -1.03916 1.789267 -0.530406 2 0 2 
+z
+" style="stroke: #1a1a2e"/>
+    </defs>
+    <g clip-path="url(#pc5b5b84012)">
+     <use xlink:href="#m051ed5f9fb" x="51.952885" y="160.766547" style="fill: #1a1a2e; stroke: #1a1a2e"/>
+     <use xlink:href="#m051ed5f9fb" x="78.305769" y="140.471679" style="fill: #1a1a2e; stroke: #1a1a2e"/>
+     <use xlink:href="#m051ed5f9fb" x="104.658654" y="120.176811" style="fill: #1a1a2e; stroke: #1a1a2e"/>
+     <use xlink:href="#m051ed5f9fb" x="131.011539" y="99.881943" style="fill: #1a1a2e; stroke: #1a1a2e"/>
+     <use xlink:href="#m051ed5f9fb" x="157.364424" y="79.587075" style="fill: #1a1a2e; stroke: #1a1a2e"/>
+     <use xlink:href="#m051ed5f9fb" x="183.717308" y="59.292206" style="fill: #1a1a2e; stroke: #1a1a2e"/>
+     <use xlink:href="#m051ed5f9fb" x="210.070193" y="38.997338" style="fill: #1a1a2e; stroke: #1a1a2e"/>
+     <use xlink:href="#m051ed5f9fb" x="236.423078" y="18.70247" style="fill: #1a1a2e; stroke: #1a1a2e"/>
+    </g>
+   </g>
+   <g id="line2d_19">
+    <defs>
+     <path id="mc31250bfb5" d="M 0 3 
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
+C 2.683901 1.55874 3 0.795609 3 0 
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
+C 1.55874 -2.683901 0.795609 -3 0 -3 
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
+C -2.683901 -1.55874 -3 -0.795609 -3 0 
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
+C -1.55874 2.683901 -0.795609 3 0 3 
+z
+" style="stroke: #737373; stroke-width: 1.2"/>
+    </defs>
+    <g>
+     <use xlink:href="#mc31250bfb5" x="25.6" y="181.061415" style="fill: #ffffff; stroke: #737373; stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 25.6 188.721586 
+L 25.6 5.100941 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 25.6 188.721586 
+L 249.59952 188.721586 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_19">
+    <!-- memory $E = 0.2516$ bit -->
+    <g style="fill: #1a1a2e" transform="translate(49.317596 179.393806)">
+     <text>
+      <tspan x="0" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">m</tspan>
+      <tspan x="5.831055" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">e</tspan>
+      <tspan x="8.937988" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">m</tspan>
+      <tspan x="14.769043" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">o</tspan>
+      <tspan x="18.269043" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">r</tspan>
+      <tspan x="21.006836" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">y</tspan>
+      <tspan x="24.694824" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e"> </tspan>
+      <tspan x="33.590434" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">=</tspan>
+      <tspan x="40.428426" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">0</tspan>
+      <tspan x="45.866414" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">2</tspan>
+      <tspan x="49.366414" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">5</tspan>
+      <tspan x="52.866414" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">1</tspan>
+      <tspan x="56.366414" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">6</tspan>
+      <tspan x="59.866414" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e"> </tspan>
+      <tspan x="62.197469" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">b</tspan>
+      <tspan x="66.083699" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">i</tspan>
+      <tspan x="68.021688" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">t</tspan>
+      <tspan x="27.025879" y="-0.140625" style="font-size: 7px; font-family: 'cmmi10'; fill: #1a1a2e">E</tspan>
+      <tspan x="43.928426" y="-0.140625" style="font-size: 7px; font-family: 'cmmi10'; fill: #1a1a2e">:</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_20">
+    <!-- slope $h = 0.6667$ bit per symbol -->
+    <g style="fill: #1a1a2e" transform="translate(36.799976 19.21752)">
+     <text>
+      <tspan x="0" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">s</tspan>
+      <tspan x="2.758301" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">l</tspan>
+      <tspan x="4.696289" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">o</tspan>
+      <tspan x="8.196289" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">p</tspan>
+      <tspan x="12.08252" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">e</tspan>
+      <tspan x="15.189453" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e"> </tspan>
+      <tspan x="22.953715" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">=</tspan>
+      <tspan x="29.791707" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">0</tspan>
+      <tspan x="35.229696" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">6</tspan>
+      <tspan x="38.729696" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">6</tspan>
+      <tspan x="42.229696" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">6</tspan>
+      <tspan x="45.729696" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">7</tspan>
+      <tspan x="49.229696" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e"> </tspan>
+      <tspan x="51.56075" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">b</tspan>
+      <tspan x="55.446981" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">i</tspan>
+      <tspan x="57.384969" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">t</tspan>
+      <tspan x="60.102254" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e"> </tspan>
+      <tspan x="62.433309" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">p</tspan>
+      <tspan x="66.319539" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">e</tspan>
+      <tspan x="69.426473" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">r</tspan>
+      <tspan x="72.164266" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e"> </tspan>
+      <tspan x="74.495321" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">s</tspan>
+      <tspan x="77.253621" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">y</tspan>
+      <tspan x="80.94161" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">m</tspan>
+      <tspan x="86.772664" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">b</tspan>
+      <tspan x="90.658895" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">o</tspan>
+      <tspan x="94.158895" y="-0.140625" style="font-size: 7px; font-family: 'cmr10'; fill: #1a1a2e">l</tspan>
+      <tspan x="17.520508" y="-0.140625" style="font-size: 7px; font-family: 'cmmi10'; fill: #1a1a2e">h</tspan>
+      <tspan x="33.291707" y="-0.140625" style="font-size: 7px; font-family: 'cmmi10'; fill: #1a1a2e">:</tspan>
+     </text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pc5b5b84012">
+   <rect x="25.6" y="5.100941" width="223.99952" height="183.620645"/>
+  </clipPath>
+ </defs>
+</svg>
