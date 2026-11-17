@@ -43,7 +43,9 @@ def make_prescribed(
         warnings.simplefilter("ignore", RuntimeWarning)
         table, counts, entropies, densities, scores, steps, *_ = (
             generate_grammar_with_target_te_complexity(
-                target_complexity=target_nats, n_nodes=n_states, rng=np.random.default_rng([seed, level])
+                target_complexity=target_nats,
+                n_nodes=n_states,
+                rng=np.random.default_rng([seed, level]),
             )
         )
     edges = set(spec.edges)
@@ -72,9 +74,7 @@ def make_prescribed(
 
 def example_strings(prescribed: dict, seed: int = 101, n: int = 6) -> list[str]:
     """Distinct strings of the admitted grammar, for inspection in the notebook."""
-    strings = complexity.draw_strings(
-        prescribed["spec"], seed, n, 0, 2, 40, 10_000, "distinct"
-    )
+    strings = complexity.draw_strings(prescribed["spec"], seed, n, 0, 2, 40, 10_000, "distinct")
     return list(dict.fromkeys(" ".join(string) for string in strings.sequence))
 
 

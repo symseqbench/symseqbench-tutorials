@@ -143,7 +143,9 @@ def test_notebook_figure_has_four_panels_and_no_title(work_dir):
         assert tuple(fig.get_size_inches()) == plotting.FULL_SLIDE
         assert all(ax.get_title() == "" for ax in fig.axes) and fig._suptitle is None
         data = plotting.save_figure_data(
-            {"convergence": convergence, "curve": curve, "prescribed": prescribed}, work_dir, "figure"
+            {"convergence": convergence, "curve": curve, "prescribed": prescribed},
+            work_dir,
+            "figure",
         )
         plt.close(fig)
     assert data.read_text().count("entropy_rate") >= 3

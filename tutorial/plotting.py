@@ -264,7 +264,12 @@ def figure_generate_and_measure(convergence: dict, curve: dict, prescribed: dict
         prescribed["closed_bits"],
     ]
     positions = np.arange(len(labels))[::-1]
-    ax_d.barh(positions, values, height=0.55, color=[COLORS["reference"], COLORS["estimate"], COLORS["second"]])
+    ax_d.barh(
+        positions,
+        values,
+        height=0.55,
+        color=[COLORS["reference"], COLORS["estimate"], COLORS["second"]],
+    )
     ax_d.set_yticks(positions)
     ax_d.set_yticklabels(labels)
     ax_d.set_xlabel(r"$h_{\mathrm{top}}$ (bits per symbol)")

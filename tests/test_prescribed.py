@@ -19,7 +19,9 @@ def test_prescribed_grammar_trace_and_examples_agree():
     table = np.array(
         [[float((source, target) in edges) for target in spec.states] for source in spec.states]
     )
-    assert np.isclose(np.log(max(np.abs(np.linalg.eigvals(table)))) / complexity.LN2, result["entropy_bits"][-1])
+    assert np.isclose(
+        np.log(max(np.abs(np.linalg.eigvals(table)))) / complexity.LN2, result["entropy_bits"][-1]
+    )
     examples = prescribed.example_strings(result)
     assert len(examples) == 6
     grammar = complexity.build_grammar(spec)
