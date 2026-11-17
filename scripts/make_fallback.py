@@ -42,6 +42,7 @@ from tutorial import (
     config,
     ladder,
     plotting,
+    prescribed,
     results,
     worked_example,
 )
@@ -108,6 +109,7 @@ def fallback_a(out: Path, no_html: bool) -> None:
     rungs = ladder.default_ladder()
     table = ladder.ladder_table(rungs, n_strings=per_rung, seed=seed)
     exact = ladder.exact_table(rungs)
+    prescribed_result = prescribed.make_prescribed(1.4, seed=7)
 
     comparison.to_csv(out / "worked_example.csv")
     flat = table.copy()
@@ -117,8 +119,9 @@ def fallback_a(out: Path, no_html: bool) -> None:
 
     plotting.apply_style()
     worked_example_panels(out, p)
-    figure_rungs = ladder.figure_rungs(table, exact)
-    figure = plotting.figure_generate_and_measure(convergence, curve, figure_rungs)
+    figure = plotting.figure_generate_and_measure(
+        convergence, curve, prescribed.figure_data(prescribed_result)
+    )
     plotting.save_figure(figure, out, "figure_generate_and_measure")
     plotting.save_figure_data(
         {
@@ -131,7 +134,7 @@ def fallback_a(out: Path, no_html: bool) -> None:
             },
             "convergence": convergence,
             "curve": curve,
-            "rungs": figure_rungs,
+            "prescribed": prescribed.figure_data(prescribed_result),
         },
         out,
         "figure_generate_and_measure",

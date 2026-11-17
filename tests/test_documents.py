@@ -8,6 +8,8 @@ from pathlib import Path
 import pytest
 from test_behaviour import broken_paragraphs
 
+from tutorial import config
+
 REPO = Path(__file__).resolve().parents[1]
 FOLDERS = ("fallback/a_generate_and_measure/", "fallback/b_behaviour/", "fallback/c_networks/")
 NOTEBOOKS = (
@@ -124,6 +126,18 @@ def test_documents_describe_the_two_parts_of_notebook_c():
     production = REPO / "data" / "complexity" / "manifest.json"
     complete = production.is_file() and json.loads(production.read_text())["complete"]
     assert ("Only the pilot runs exist" in readme) != complete
+    # the README says which part of a line of the final figure is dashed, with the band of the
+    # design that the production runs leave out (read here from the settings)
+    held = {level.band_bits for level in config.COMPLEXITY.levels}
+    (left_out,) = [
+        level.band_bits for level in config.COMPLEXITY_DESIGN.levels if level.band_bits not in held
+    ]
+    band = f"{left_out[0]:.2f} to {left_out[1]:.2f} bits per symbol"
+    assert band == "1.86 to 1.98 bits per symbol"
+    assert (
+        f"crosses a band of the design that was not run ({band} in the production runs) is dashed"
+        in readme
+    )
     assert "data/complexity" in (REPO / "OFFLINE.md").read_text()
     # the row of the running guide names the controls the notebook has
     guide = (REPO / "docs" / "RUNNING-THE-NOTEBOOKS.md").read_text()

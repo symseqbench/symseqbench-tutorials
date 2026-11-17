@@ -160,16 +160,16 @@ def test_the_two_panels_of_the_worked_example_come_before_the_ladder():
     words = "plotting.figure_worked_example_words("
     block = "plotting.figure_worked_example_block_entropy("
     final = "plotting.figure_generate_and_measure("
-    ladder_section = "## 2. A ladder of grammars"
-    assert in_order(source, ["## 1. Worked example", words, block, ladder_section, final])
+    prescribed_section = "## 2. A grammar at a chosen complexity"
+    assert in_order(source, ["## 1. Worked example", words, block, prescribed_section, final])
     assert all(source.count(call) == 1 for call in (words, block, final))
     assert source.count("plotting.figure_") == 3 and "plt." not in source
     last_cell = source.rsplit("@app.cell", 1)[1]
     assert final in last_cell and "figure_worked_example" not in last_cell
     assert "worked_example.block_entropy_panel(p)" in source  # the panel follows the control of p
-    # must reject: the two panels after the ladder, and a second final figure
-    assert not in_order(source, [ladder_section, words])
-    assert not in_order(source, [ladder_section, block])
+    # must reject: the two panels after the prescribed-complexity exercise, and a second final figure
+    assert not in_order(source, [prescribed_section, words])
+    assert not in_order(source, [prescribed_section, block])
     assert (source + final).count(final) != 1
 
 

@@ -16,6 +16,7 @@ from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import pytest
 from scipy.stats import binom
 from test_complexity import UNIFILAR
@@ -626,6 +627,12 @@ def synthetic(n_levels: int = 4, per_level: int = 3, seeds=(101, 102)) -> tuple[
         "sizes": [50, 200, 800],
         "seeds": list(seeds),
         "models": list(config.MODELS),
+        "settings": {
+            "levels": [
+                {"target_nats": 0.5 + 0.1 * level["level"], "band_bits": level["band_bits"]}
+                for level in drawn["levels"]
+            ]
+        },
     }
     return saved, manifest, drawn
 
@@ -873,6 +880,254 @@ def test_size_table_is_a_sign_test_across_grammars():
     assert (worse["better with more strings"] == 0).all() and np.allclose(
         worse["p (sign test, one-sided)"], 1.0
     )
+
+
+DESIGN_BANDS = [[1.26, 1.42], [1.45, 1.6], [1.63, 1.77], [1.86, 1.98], [2.0, 2.12]]
+
+
+def segments_of(run: list[int], settings: list[int] | None = None) -> list[list]:
+    """The bands that were not run, per segment, if the levels ``run`` of the design were run.
+
+    ``settings`` are the levels that the settings hold; by default those that were run.
+    """
+    levels = [
+        {"level": position, "band_bits": DESIGN_BANDS[index]} for position, index in enumerate(run)
+    ]
+    held = [DESIGN_BANDS[index] for index in (run if settings is None else settings)]
+    segments = runs.level_segments(levels, held)
+    assert [segment["levels"] for segment in segments] == [[i, i + 1] for i in range(len(run) - 1)]
+    assert all(segment["dashed"] == bool(segment["bands_not_run"]) for segment in segments)
+    return [segment["bands_not_run"] for segment in segments]
+
+
+def test_a_segment_is_dashed_where_a_band_of_the_design_was_not_run():
+    # the bands of the design, written here a second time
+    assert [list(level.band_bits) for level in config.COMPLEXITY_DESIGN.levels] == DESIGN_BANDS
+    # all five levels: no segment crosses a band that was not run
+    assert segments_of([0, 1, 2, 3, 4]) == [[], [], [], []]
+    # the fourth level left out: the segment from the third level to the last crosses its band
+    assert segments_of([0, 1, 2, 4]) == [[], [], [[1.86, 1.98]]]
+    # two neighbouring levels left out: one segment, two bands
+    assert segments_of([0, 3, 4]) == [[[1.45, 1.6], [1.63, 1.77]], []]
+    # must reject: a level left out at either end lies between no two levels that were run
+    assert segments_of([0, 1, 2, 3]) == [[], [], []]
+    assert segments_of([1, 2, 3, 4]) == [[], [], []]
+    # must reject: a rule that reads the data. A level that the settings hold and that gave no
+    # grammar leaves the same gap between its neighbours, and the line across it stays solid
+    assert segments_of([0, 1, 2, 4], settings=[0, 1, 2, 3, 4]) == [[], [], []]
+
+    # the saved folders: the production runs leave out one band of the design, the pilot none
+    dropped = list(config.COMPLEXITY_LEVELS[config.COMPLEXITY_LEVEL_TO_DROP].band_bits)
+    for kind, wanted in (("production", [[], [], [dropped]]), ("pilot", [[], [], [], []])):
+        saved, manifest, drawn = runs.load_runs(runs.FOLDERS[kind])
+        data = runs.figure_data(saved, manifest, drawn)
+        assert [segment["bands_not_run"] for segment in data["segments"]] == wanted, kind
+        assert [segment["dashed"] for segment in data["segments"]] == [bool(b) for b in wanted]
+        # the bands of the settings are those of the levels in the file of the grammars
+        assert [level["band_bits"] for level in manifest["settings"]["levels"]] == [
+            level["band_bits"] for level in drawn["levels"]
+        ]
+    assert dropped == [1.86, 1.98]
+    # the synthetic runs have bands of their own and every band of the design is left out, but
+    # none of them lies between two of their levels
+    saved, manifest, drawn = synthetic()
+    assert not any(s["dashed"] for s in runs.figure_data(saved, manifest, drawn)["segments"])
+
+
+def test_figure_data_of_some_levels_are_those_of_their_grammars_alone():
+    saved, manifest, drawn = synthetic()
+    data = runs.figure_data(saved, manifest, drawn)
+    below = runs.restricted_to(data, [0, 1, 2])
+    # by another route: the figure data of the runs and the grammars of those levels
+    fewer = runs.figure_data(
+        [run for run in saved if run["level"] < 3], manifest, {"levels": drawn["levels"][:3]}
+    )
+    assert below == fewer
+    assert len(below["grammars"]) == 9 and [level["level"] for level in below["levels"]] == [
+        0,
+        1,
+        2,
+    ]
+    assert [segment["levels"] for segment in below["segments"]] == [[0, 1], [1, 2]]
+    assert len(data["grammars"]) == 12  # the data given are left as they were
+    # the trend on nine grammars counts every ordering; on twelve it draws them
+    p = "p (one-sided, for a fall)"
+    all_trend, below_trend = runs.trend_table(data), runs.trend_table(below)
+    assert set(below_trend["grammars"]) == {9} and set(all_trend["grammars"]) == {12}
+    assert set(below_trend["p from"]) == {"all 362880 orderings"}
+    # must reject: the p-values of twelve grammars given as those of nine
+    assert not np.allclose(all_trend[p], below_trend[p], rtol=0.0, atol=1e-9)
+    # levels that are not neighbours keep no segment
+    ends = runs.restricted_to(data, [0, 3])
+    assert ends["segments"] == [] and len(ends["grammars"]) == 6
+    assert ends["models"]["rnn"]["200"]["score"]["level"] == [
+        data["models"]["rnn"]["200"]["score"]["level"][i] for i in (0, 3)
+    ]
+    with pytest.raises(ValueError, match="No grammar at the levels"):
+        runs.restricted_to(data, [7])
+
+
+def test_fall_of_the_level_means_below_a_segment_and_across_it():
+    saved, manifest, drawn = synthetic()
+    data = runs.figure_data(saved, manifest, drawn)
+    segment = {"levels": [2, 3], "bands_not_run": [[1.71, 1.74]], "dashed": True}
+    table = runs.fall_table(data, segment)
+    assert len(table) == 2 * 2 * 3  # two networks, two measures, three sizes
+    means = runs.mean_table(data)  # by another route: the table of the level means
+    for _, row in table.iterrows():
+        name = "score" if row["measure"] == "prediction score" else "area"
+        column = means[f"{row['network']}: {name}"]
+        first, third, fourth = (column.loc[(level, row["training strings"])] for level in (1, 3, 4))
+        assert row["fall below"] == pytest.approx(first - third, rel=0.0, abs=1e-12)
+        assert row["fall across"] == pytest.approx(third - fourth, rel=0.0, abs=1e-12)
+        assert row["larger across"] == (row["fall across"] > row["fall below"])
+    # level means by hand, in numbers that are exact: the fall across is counted only if it is larger
+    by_hand = {
+        (1.0, 0.875, 0.75, 0.25): (0.25, 0.5, True),
+        (1.0, 0.75, 0.5, 0.25): (0.5, 0.25, False),
+        (1.0, 0.75, 0.5, 0.0): (0.5, 0.5, False),  # must reject: equal falls counted as larger
+        (0.5, 0.75, 1.0, 0.75): (-0.5, 0.25, True),  # a rise below the segment is a negative fall
+    }
+    for level_means, (below, across, larger) in by_hand.items():
+        changed = copy.deepcopy(data)
+        changed["models"]["rnn"]["200"]["score"]["level"] = list(level_means)
+        found = runs.fall_table(changed, segment)
+        row = found[
+            (found["network"] == "tanh RNN")
+            & (found["training strings"] == 200)
+            & (found["measure"] == "prediction score")
+        ].iloc[0]
+        assert (row["fall below"], row["fall across"], row["larger across"]) == (
+            below,
+            across,
+            larger,
+        )
+    # the first segment has no level below it: the fall below is zero
+    first = runs.fall_table(data, {"levels": [0, 1], "bands_not_run": [], "dashed": False})
+    assert (first["fall below"] == 0.0).all()
+
+    # what is counted about the segment: the grammars on its two sides and the trend below it
+    counts = runs.gap_counts(data, segment)
+    assert counts["levels"] == [2, 3] and counts["lowest_level"] == 0
+    assert counts["bands_not_run"] == [[1.71, 1.74]]
+    # level 3 has the grammars at 1.50, 1.51 and 1.52 bits, level 4 those at 1.75, 1.76 and 1.77
+    assert counts["highest_below"] == pytest.approx(1.52) and counts[
+        "lowest_above"
+    ] == pytest.approx(1.75)
+    assert counts["grammars_below"] == 9 and counts["combinations"] == 12
+    assert counts["larger_across"] == int(table["larger across"].sum())
+    fewer = runs.trend_table(
+        runs.figure_data(
+            [run for run in saved if run["level"] < 3], manifest, {"levels": drawn["levels"][:3]}
+        )
+    )
+    fewer = fewer[fewer["expected"] != "none"]
+    assert counts["supported_below"] == int((fewer["verdict"] == "supported").sum()) == 12
+    # must reject: with the measures of the first and the third level exchanged nothing falls below
+    # the segment
+    exchanged = copy.deepcopy(data)
+    for by_size in exchanged["models"].values():
+        for entry in by_size.values():
+            for measure in ("score", "auc"):
+                values = entry[measure]["grammar"]
+                values[0:3], values[6:9] = values[6:9], values[0:3]
+    assert runs.gap_counts(exchanged, segment)["supported_below"] == 0
+    # must reject: the trend across all twelve grammars counted as the trend below the segment.
+    # The nine grammars below it get values that fall too weakly to be supported on their own
+    # (ranks 8 4 9 3 6 1 5 7 2 along the entropy: rho is -0.4167 and p is 0.135), and the three
+    # above it get the lowest values. Across all twelve the trend is supported in every cell.
+    weak = copy.deepcopy(data)
+    values = [0.5 + 0.01 * rank for rank in (8, 4, 9, 3, 6, 1, 5, 7, 2)] + [0.1, 0.09, 0.08]
+    for by_size in weak["models"].values():
+        for entry in by_size.values():
+            for measure in ("score", "auc"):
+                entry[measure]["grammar"] = list(values)
+    entropy = [grammar["topological_entropy_bits"] for grammar in weak["grammars"]]
+    assert runs.spearman(entropy[:9], values[:9]) == pytest.approx(-5 / 12, abs=1e-12)
+    assert runs.spearman(entropy, values) < -0.7
+    across_all = runs.trend_table(weak)
+    across_all = across_all[across_all["expected"] != "none"]
+    assert (across_all["verdict"] == "supported").all() and len(across_all) == 12
+    assert runs.gap_counts(weak, segment)["supported_below"] == 0
+
+
+def test_count_of_cells_that_stay_supported_when_the_threshold_is_divided():
+    p = "p (one-sided, for a fall)"
+
+    def cells(values: list[tuple[float, str, str]]) -> pd.DataFrame:
+        return pd.DataFrame(
+            [
+                {p: value, "verdict": verdict, "expected": expected}
+                for value, verdict, expected in values
+            ]
+        )
+
+    # twelve cells of the expectation: the threshold is 0.05 / 12 = 0.0041666...
+    assert config.TREND_ALPHA == 0.05
+    twelve = cells(
+        [
+            (0.004, "supported", "falls"),
+            (0.0042, "supported", "falls"),
+            (0.05, "supported", "falls"),
+        ]
+        + [(0.2, "not supported", "falls")] * 9
+    )
+    assert runs.supported_when_divided(twelve) == 1
+    # must reject: a small p-value of a cell that is not supported (the correlation is positive)
+    twelve.loc[3, p] = 0.0001
+    assert runs.supported_when_divided(twelve) == 1
+    twelve.loc[3, "verdict"] = "supported"
+    assert runs.supported_when_divided(twelve) == 2
+    # must reject: the rows without expectation counted among the tests. With them the divisor
+    # would be 18 and the threshold 0.0027..., and the cell at 0.004 would be lost
+    with_others = pd.concat(
+        [twelve, cells([(0.001, "no expectation", "none")] * 6)], ignore_index=True
+    )
+    assert runs.supported_when_divided(with_others) == 2
+    # four cells: the threshold is 0.0125
+    four = cells([(0.0125, "supported", "falls"), (0.013, "supported", "falls")] * 2)
+    assert runs.supported_when_divided(four) == 2
+    # the synthetic runs: every cell is supported at 1 in 100 001
+    saved, manifest, drawn = synthetic()
+    trends = runs.trend_table(runs.figure_data(saved, manifest, drawn))
+    assert runs.supported_when_divided(trends) == 12
+
+
+def test_grammars_in_which_one_model_is_above_another():
+    saved, manifest, drawn = synthetic()
+    data = runs.figure_data(saved, manifest, drawn)
+    table = runs.above_table(data, 800)
+    assert len(table) == 2 * 3 and set(table["training strings"]) == {800}
+    assert set(table["grammars"]) == {12}
+    found = table.set_index(["model", "compared with", "measure"])["above"]
+    # the synthetic runs: both networks above the first-order model in every grammar, and the
+    # tanh RNN, whose divergence is the larger one, above the linear transformer in none
+    for measure in ("prediction score", "area under the curve"):
+        assert found["tanh RNN", "first-order model", measure] == 12
+        assert found["linear transformer", "first-order model", measure] == 12
+        assert found["tanh RNN", "linear transformer", measure] == 0
+    # by hand: the tanh RNN lifted above the transformer in five grammars, for the score at 800
+    # strings only; a grammar in which the two are equal does not count
+    changed = copy.deepcopy(data)
+    rnn = changed["models"]["rnn"]["800"]["score"]["grammar"]
+    other = changed["models"]["linear transformer"]["800"]["score"]["grammar"]
+    for i in (0, 3, 4, 7, 11):
+        rnn[i] = other[i] + 0.01
+    rnn[5] = other[5]
+    first_order = changed["first_order"]["800"]["auc"]["grammar"]
+    for i in (1, 2):
+        first_order[i] = 2.0  # above every value of the synthetic runs
+    found = runs.above_table(changed, 800).set_index(["model", "compared with", "measure"])["above"]
+    assert found["tanh RNN", "linear transformer", "prediction score"] == 5
+    assert found["tanh RNN", "linear transformer", "area under the curve"] == 0
+    assert found["tanh RNN", "first-order model", "area under the curve"] == 10
+    assert found["linear transformer", "first-order model", "area under the curve"] == 10
+    assert found["tanh RNN", "first-order model", "prediction score"] == 12
+    # must reject: the counts of another number of training strings
+    at_200 = runs.above_table(changed, 200).set_index(["model", "compared with", "measure"])[
+        "above"
+    ]
+    assert at_200["tanh RNN", "linear transformer", "prediction score"] == 0
 
 
 def test_projection_of_the_production_time_by_hand():

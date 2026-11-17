@@ -153,20 +153,12 @@ def save_figure_data(data: dict, out_dir: str | Path, basename: str) -> Path:
     return path
 
 
-def figure_generate_and_measure(convergence: dict, curve: dict, rungs: dict):
-    """The figure of notebook A: the worked example checked on generated sequences, and the ladder.
+def figure_generate_and_measure(convergence: dict, curve: dict, prescribed: dict):
+    """Notebook A: the worked example and a grammar synthesised at a chosen complexity.
 
-    Parameters
-    ----------
-    convergence : dict
-        ``n`` (sequence lengths), ``entropy_rate`` and ``excess_entropy`` (SymSeq estimates at each
-        length), ``entropy_rate_exact`` and ``excess_entropy_exact`` (closed forms).
-    curve : dict
-        ``p`` and ``entropy_rate`` (closed form h(p) on a grid), ``p_estimated`` and
-        ``entropy_rate_estimated`` (SymSeq estimates), ``topological_entropy`` and ``p_max``.
-    rungs : dict
-        ``names``, ``entropy_rate`` (SymSeq estimate), ``entropy_rate_exact`` (from the generator) and
-        ``excess_entropy`` (SymSeq estimate), one value per rung.
+    ``convergence`` and ``curve`` are the two-state worked example. ``prescribed`` comes from
+    ``tutorial.prescribed.figure_data``: the sampler's steps and topological entropy in bits, its
+    target, and the achieved entropy on the open and closed graphs.
     """
     fig, axes = plt.subplots(
         1,
@@ -240,36 +232,46 @@ def figure_generate_and_measure(convergence: dict, curve: dict, rungs: dict):
     )  # inside the arch of the curve
     panel_label(ax_b, "B")
 
-    # C: entropy rate along the ladder, exact value first and in grey, estimate in colour
-    positions = np.arange(len(rungs["names"]))[::-1]
+    # C: the sampler approaching the requested topological entropy
+    steps = np.asarray(prescribed["steps"], dtype=float)
+    entropy_bits = np.asarray(prescribed["entropy_bits"], dtype=float)
+    valid = np.isfinite(entropy_bits) & (entropy_bits > 0)
     ax_c.plot(
-        rungs["entropy_rate_exact"],
-        positions,
-        "o",
-        ms=7,
-        mfc="none",
-        color=COLORS["reference"],
-        label="exact",
+        steps[valid],
+        entropy_bits[valid],
+        color=COLORS["estimate"],
+        lw=SERIES_LINEWIDTH,
+        label="sampler",
     )
-    ax_c.plot(
-        rungs["entropy_rate"], positions, "o", ms=3.5, color=COLORS["estimate"], label="estimate"
+    ax_c.axhline(
+        prescribed["target_bits"],
+        color=COLORS["limit"],
+        lw=LIMIT_LINEWIDTH,
+        ls="--",
+        label="target",
     )
-    ax_c.set_yticks(positions)
-    ax_c.set_yticklabels(rungs["names"])
-    ax_c.set_xlabel(r"$h$ (bits per symbol)")
-    highest = np.nanmax([*rungs["entropy_rate"], *rungs["entropy_rate_exact"]])
-    ax_c.set_xlim(0, 1.15 * highest)
-    ax_c.set_ylim(-0.6, len(positions) + 0.5)  # room for the legend above the first rung
-    ax_c.legend(loc="upper right", ncols=2, columnspacing=0.8, handletextpad=0.2, borderaxespad=0.1)
-    panel_label(ax_c, "C", x=-0.75)
+    ax_c.set_xlabel("iteration")
+    ax_c.set_ylabel(r"topological entropy $h_{\mathrm{top}}$ (bits per symbol)")
+    ax_c.set_ylim(bottom=0)
+    ax_c.legend(loc="lower right", handlelength=1.5)
+    panel_label(ax_c, "C")
 
-    # D: excess entropy along the ladder (estimate only)
-    ax_d.barh(positions, rungs["excess_entropy"], height=0.6, color=COLORS["second"])
+    # D: target and achieved values, on the open graph and after closing it with the end marker
+    labels = ["target", "open graph", "closed graph"]
+    values = [
+        prescribed["target_bits"],
+        prescribed["achieved_open_bits"],
+        prescribed["closed_bits"],
+    ]
+    positions = np.arange(len(labels))[::-1]
+    ax_d.barh(positions, values, height=0.55, color=[COLORS["reference"], COLORS["estimate"], COLORS["second"]])
     ax_d.set_yticks(positions)
-    ax_d.set_yticklabels([])
-    ax_d.set_xlabel(r"memory $E$ (bits)")
-    ax_d.set_ylim(-0.6, len(positions) + 0.5)
-    panel_label(ax_d, "D", x=-0.15)
+    ax_d.set_yticklabels(labels)
+    ax_d.set_xlabel(r"$h_{\mathrm{top}}$ (bits per symbol)")
+    ax_d.set_xlim(0, 1.15 * max(values))
+    for position, value in zip(positions, values, strict=True):
+        ax_d.text(value + 0.02 * max(values), position, f"{value:.2f}", va="center", fontsize=7)
+    panel_label(ax_d, "D", x=-0.55)
     return fig
 
 
@@ -400,11 +402,32 @@ ANCHOR_STYLE = ":"
 ANCHOR_LINEWIDTH = 0.7
 ANCHOR_FONTSIZE = 6.5
 SERIES_LINEWIDTH = 1.4
+# The line through the level means is dashed where it crosses a band of the design that was not
+# run: no grammar was drawn in that range, so the line joins two levels and is no curve there.
+NOT_RUN_STYLE = "--"
+NOT_RUN_LABEL = "across a band that was not run"
 # the two rows of the figure: measure, lower anchor and its name, label of the vertical axis
 COMPLEXITY_ROWS = (
     ("score", 0.0, "uniform guess", "prediction score"),
     ("auc", 0.5, "chance", "grammaticality judgement\n(area under the ROC curve)"),
 )
+
+
+def level_stretches(segments: list[dict]) -> list[tuple[str, int, int]]:
+    """How the line through the level means is drawn: in stretches, each solid or dashed.
+
+    ``segments`` has one entry per pair of neighbouring levels, lowest first
+    (``complexity_runs.level_segments``). Neighbouring segments of the same kind form one stretch.
+    Returns, for each stretch, its line style and the positions of its first and last level.
+    """
+    stretches: list[tuple[str, int, int]] = []
+    for position, segment in enumerate(segments):
+        style = NOT_RUN_STYLE if segment["dashed"] else "-"
+        if stretches and stretches[-1][0] == style:
+            stretches[-1] = (style, stretches[-1][1], position + 1)
+        else:
+            stretches.append((style, position, position + 1))
+    return stretches or [("-", 0, 0)]  # one level alone: a line of one point
 
 
 def figure_complexity(data: dict, live: dict | None = None):
@@ -416,16 +439,18 @@ def figure_complexity(data: dict, live: dict | None = None):
     (Eq. 10 there), which is 0.5 at chance and 1 for the exact predictor. The horizontal axis is
     the topological entropy of the grammar. Each panel holds three series: the two networks and,
     in grey, the first-order model with add-one smoothing. Points are grammars (mean over training
-    seeds) and lines join the means of the levels. The anchors are thin dotted dark lines, named in
-    words in the first panel of their row, and always lie inside the axis range; the range goes
-    below the lower anchor if a value does.
+    seeds) and lines join the means of the levels. Between two levels that have a band of the
+    design between them that was not run, the line is dashed, and the legend says so. The anchors
+    are thin dotted dark lines, named in words in the first panel of their row, and always lie
+    inside the axis range; the range goes below the lower anchor if a value does.
 
     Parameters
     ----------
     data : dict
         From ``tutorial.complexity_runs.figure_data``: ``grammars`` and ``levels`` (with their
-        ``topological_entropy_bits``), ``sizes``, ``models`` and ``first_order`` (per training size
-        and measure: ``grammar``, one value per grammar, and ``level``, one per level),
+        ``topological_entropy_bits``), ``segments`` (per pair of neighbouring levels, whether the
+        line between them is ``dashed``), ``sizes``, ``models`` and ``first_order`` (per training
+        size and measure: ``grammar``, one value per grammar, and ``level``, one per level),
         ``placeholder``. Placeholder results are marked as such above every panel.
     live : dict, optional
         A run trained in the notebook: ``topological_entropy_bits``, ``n_train`` and, per model,
@@ -449,6 +474,7 @@ def figure_complexity(data: dict, live: dict | None = None):
         *((MODEL_NAMES[m], MODEL_COLORS[m], by_size) for m, by_size in data["models"].items()),
     ]
     shown = live is not None and str(live["n_train"]) in sizes
+    stretches = level_stretches(data["segments"])
     for row, (measure, anchor, anchor_name, label) in enumerate(COMPLEXITY_ROWS):
         lowest = anchor
         for column, size in enumerate(sizes):
@@ -457,9 +483,16 @@ def figure_complexity(data: dict, live: dict | None = None):
                 ax.axhline(
                     value, color=ANCHOR_COLOR, ls=ANCHOR_STYLE, lw=ANCHOR_LINEWIDTH, zorder=1
                 )
-            for name, color, by_size in series:
+            for _, color, by_size in series:
                 entry = by_size[size][measure]
-                ax.plot(x_level, entry["level"], "-", color=color, lw=SERIES_LINEWIDTH, label=name)
+                for style, first, last in stretches:
+                    ax.plot(
+                        x_level[first : last + 1],
+                        entry["level"][first : last + 1],
+                        style,
+                        color=color,
+                        lw=SERIES_LINEWIDTH,
+                    )
                 ax.plot(x_grammar, entry["grammar"], "o", color=color, ms=3, mec="none", alpha=0.85)
                 lowest = min(lowest, *entry["grammar"], *entry["level"])
             if shown and str(live["n_train"]) == size:
@@ -509,6 +542,17 @@ def figure_complexity(data: dict, live: dict | None = None):
         Line2D([], [], color=color, lw=SERIES_LINEWIDTH, marker="o", ms=3, label=name)
         for name, color, _ in (*series[1:], series[0])
     ]
+    if any(segment["dashed"] for segment in data["segments"]):
+        handles.append(
+            Line2D(
+                [],
+                [],
+                color=COLORS["ink"],
+                lw=SERIES_LINEWIDTH,
+                ls=NOT_RUN_STYLE,
+                label=NOT_RUN_LABEL,
+            )
+        )
     if shown:
         handles.append(
             Line2D(

@@ -8,6 +8,7 @@ from __future__ import annotations
 import ast
 import copy
 import hashlib
+import html
 import json
 import math
 import os
@@ -228,9 +229,151 @@ def numbers_in_prose(runs: list[dict]) -> dict[str, str]:
     }
 
 
+def reading_in_prose(runs: list[dict], manifest: dict, drawn: dict) -> dict[str, str]:
+    """The sentences beside the last figure that state counts of the runs shown, made here from the run files.
+
+    The band that was not run is found from the settings: the band of the design that they leave
+    out. A level mean is the mean over the grammars of a level of their means over the training
+    seeds. The trend below the dashed part is the trend table of the runs of those levels alone.
+    The counts of grammars in which one model is above another compare the means over the
+    training seeds, at the largest number of training strings.
+    """
+    levels = sorted({run["level"] for run in runs})
+    sizes = sorted({run["n_train"] for run in runs})
+    grammars = sorted({(run["level"], run["grammar"]["seed"]) for run in runs})
+
+    def value(level, seed, model, size, source, measure) -> float:
+        return float(
+            np.mean(
+                [
+                    run[source][measure]
+                    for run in runs
+                    if (run["level"], run["grammar"]["seed"], run["model"], run["n_train"])
+                    == (level, seed, model, size)
+                ]
+            )
+        )
+
+    bands = [level["band_bits"] for level in manifest["settings"]["levels"]]
+    left_out = [
+        list(level.band_bits)
+        for level in config.COMPLEXITY_DESIGN.levels
+        if list(level.band_bits) not in bands
+    ]
+    (band,) = left_out
+    lower = max(level for level in levels if bands[level][1] <= band[0])
+    upper = min(level for level in levels if bands[level][0] >= band[1])
+    entropy = {
+        (spec.level, spec.seed): values["topological_entropy_bits"]
+        for spec, values in complexity_runs.admitted_grammars(drawn)
+    }
+    highest = max(v for (level, _), v in entropy.items() if level == lower)
+    lowest = min(v for (level, _), v in entropy.items() if level == upper)
+    larger = combinations = 0
+    for model in config.MODELS:
+        for measure in ("score", "auc"):
+            for size in sizes:
+                mean = {
+                    level: np.mean(
+                        [
+                            value(of_level, seed, model, size, "measures", measure)
+                            for of_level, seed in grammars
+                            if of_level == level
+                        ]
+                    )
+                    for level in levels
+                }
+                larger += bool(mean[lower] - mean[upper] > mean[levels[0]] - mean[lower])
+                combinations += 1
+    table = complexity_runs.trend_table(complexity_runs.figure_data(runs, manifest, drawn))
+    tested = table[table["expected"] == "falls"]
+    p = tested["p (one-sided, for a fall)"]
+    divided = int(((tested["verdict"] == "supported") & (p <= 0.05 / len(tested))).sum())
+    fewer = complexity_runs.trend_table(
+        complexity_runs.figure_data(
+            [run for run in runs if run["level"] <= lower],
+            manifest,
+            {"levels": drawn["levels"][: lower + 1]},
+        )
+    )
+    fewer = fewer[fewer["expected"] == "falls"]
+    below = int((fewer["verdict"] == "supported").sum())
+    n_below = sum(level <= lower for level, _ in grammars)
+    size, total = sizes[-1], len(grammars)
+
+    def above(first: str, second: str | None, measure: str) -> int:
+        count = 0
+        for level, seed in grammars:
+            a = value(level, seed, first, size, "measures", measure)
+            b = (
+                value(level, seed, config.MODELS[0], size, "first_order", measure)
+                if second is None
+                else value(level, seed, second, size, "measures", measure)
+            )
+            count += a > b
+        return count
+
+    rnn, transformer = config.MODELS
+    return {
+        "dashed": f"The dashed part of a line joins two levels across a band of the design that was not run, {band[0]:.2f} to {band[1]:.2f} bits per symbol. "
+        f"The grammars below it reach {highest:.2f} bits per symbol and those above it start at {lowest:.2f}; no grammar lies in between.",
+        "not corrected": f"The {len(tested)} tests are not corrected for their number: {divided} of them keep a p-value of at most 0.05 divided by {len(tested)}. "
+        f"Each test pools the {total} grammars of the {len(levels)} levels.",
+        "below the dashed part": f"On the {n_below} grammars below the dashed part alone, {below} of the {combinations} combinations have a negative correlation with a p-value of at most 0.05.",
+        "fall across": f"In {larger} of the {combinations} combinations the mean of a level falls more across the dashed part, from level {lower + 1} to level {upper + 1}, than from level {levels[0] + 1} to level {lower + 1}.",
+        "largest size": f"With {size} training strings the tanh RNN is above the first-order model in {above(rnn, None, 'score')} of {total} grammars for the prediction score "
+        f"and in {above(rnn, None, 'auc')} of {total} for the area under the curve; the linear transformer in {above(transformer, None, 'score')} of {total} and in {above(transformer, None, 'auc')} of {total}. "
+        f"The tanh RNN is above the linear transformer in {above(rnn, transformer, 'score')} of {total} grammars for the prediction score and in {above(rnn, transformer, 'auc')} of {total} for the area under the curve.",
+    }
+
+
+def tables_of_the_export(page: str) -> list[list[dict]]:
+    """The rows of every table that a static HTML export shows, in the order of the cells.
+
+    marimo writes the session into the page as JSON; a table is an element that holds its rows as
+    data. Each table is returned as a list of rows, a row as a dictionary from column to value.
+    """
+    start = page.index('"session":') + len('"session":')
+    session, _ = json.JSONDecoder().raw_decode(page[start:].lstrip())
+    tables = []
+    for cell in session["cells"]:
+        for output in cell.get("outputs", []):
+            for content in output.get("data", {}).values():
+                if not isinstance(content, str):
+                    continue
+                for attributes in re.findall(r"<marimo-table\b([^>]*)>", content):
+                    held = re.search(r"data-data='([^']*)'", attributes)
+                    rows = json.loads(html.unescape(held.group(1)))
+                    tables.append(json.loads(rows) if isinstance(rows, str) else rows)
+    return tables
+
+
+def shows_with_decimals(tables: list[list[dict]], frame, decimals: int) -> bool:
+    """Is one of the tables this frame, with every number rounded to that many decimals?
+
+    A number too large for the page's own number type is written there as text, so every value of
+    a column of numbers is read as a number before it is compared.
+    """
+    wanted = frame.round(decimals).to_dict("records")
+    for rows in tables:
+        if len(rows) != len(wanted) or set(rows[0]) != set(wanted[0]):
+            continue
+        if all(
+            math.isclose(float(row[column]), value, rel_tol=1e-12, abs_tol=1e-12)
+            if isinstance(value, float)
+            else row[column] == value
+            for row, expected in zip(rows, wanted, strict=True)
+            for column, value in expected.items()
+        ):
+            return True
+    return False
+
+
 def test_placeholder_results_are_named_as_such(work_dir):
     _, manifest = results.load_runs(results.default_folder())
-    shown, complexity_manifest, _ = complexity_runs.load_runs(complexity_runs.default_folder())
+    shown, complexity_manifest, shown_drawn = complexity_runs.load_runs(
+        complexity_runs.default_folder()
+    )
     text = export_text(NOTEBOOK, work_dir / "c.html")
     assert "C. Networks" in text and "Grammars of controlled complexity" in text
     # section 3 states numbers of the runs it shows: each sentence is found with the values of the runs
@@ -239,6 +382,21 @@ def test_placeholder_results_are_named_as_such(work_dir):
         assert sentence in text, name
     for words in ("prediction score", "uniform guess", "exact predictor"):
         assert words in text, words
+    # the table of the grammars is shown with three decimals
+    shown_tables = tables_of_the_export(text)
+    assert len(shown_tables) == 10
+    grammar_table = complexity_runs.grammar_table(shown_drawn)
+    assert shows_with_decimals(shown_tables, grammar_table, 3)
+    # must reject: the same table with one decimal, with two and with four
+    for decimals in (1, 2, 4):
+        assert not shows_with_decimals(shown_tables, grammar_table, decimals), decimals
+    # beside the last figure: what the dashed part of a line is, what the tests rest on, and the
+    # largest number of training strings. Each sentence is found with the counts of the runs shown.
+    reading_of_the_default = None
+    if not complexity_manifest["placeholder"]:
+        reading_of_the_default = reading_in_prose(shown, complexity_manifest, shown_drawn)
+        for name, sentence in reading_of_the_default.items():
+            assert sentence in text, name
     # with placeholder results the note says that a level is its band and not its number
     band_not_number = (
         "a level is identified by its band of topological entropy and not by its number"
@@ -291,6 +449,11 @@ def test_placeholder_results_are_named_as_such(work_dir):
         f"production runs have {len(config.COMPLEXITY.levels)}"
     ) in text
     assert "Saved results of the complexity experiment:" not in text
+    # the pilot has every level of the design, so no line has a dashed part; and nothing is read
+    # from placeholders
+    assert "The dashed part of a line" not in text and "lines join the means of the levels" in text
+    assert "tests are not corrected for their number" not in text
+    assert "training strings the tanh RNN is above" not in text
     # must reject: numbers typed into the text. On the changed runs the text gives the changed numbers
     before, after = numbers_in_prose(pilot_runs), numbers_in_prose(changed_runs)
     for name in (
@@ -304,12 +467,36 @@ def test_placeholder_results_are_named_as_such(work_dir):
             name
         )
     assert after["probability"] in text  # not changed in the copy, so it is the same sentence
-    # must reject: when the results are not placeholders, no warning is shown
+    # must reject: when the results are not placeholders, no warning is shown. The production runs
+    # are read from a copy in which the grammars beside the band that was not run are moved a
+    # little, the first-order model is made perfect, and the linear transformer is put at the
+    # uniform guess on every grammar of the level below the band: every count of the reading changes.
+    production_runs, production_manifest, production_drawn = complexity_runs.load_runs(
+        complexity_runs.FOLDERS["production"]
+    )
+    changed_folder = work_dir / "changed_production"
+    shutil.copytree(complexity_runs.FOLDERS["production"], changed_folder)
+    moved = json.loads((changed_folder / "grammars.json").read_text())
+    for level, shift in ((2, 0.02), (3, -0.02)):
+        for admitted in moved["levels"][level]["admitted"]:
+            admitted["values"]["topological_entropy_bits"] += shift
+    (changed_folder / "grammars.json").write_text(json.dumps(moved, indent=1))
+    for path in (changed_folder / "runs").glob("*.json"):
+        run = json.loads(path.read_text())
+        run["first_order"].update(divergence_bits=0.0, score=1.0, auc=1.0)
+        if run["level"] == 2 and run["model"] == "linear transformer":
+            guess = run["references"]["uniform_guess"]
+            run["measures"].update(divergence_bits=guess, score=0.0, auc=0.5)
+        path.write_text(json.dumps(run, indent=1))
+    assert complexity_runs.collect(changed_folder, "production", config.COMPLEXITY)["complete"]
+    changed_runs, changed_manifest, changed_drawn = complexity_runs.load_runs(changed_folder)
+    on_changed = f"    complexity_saved, complexity_manifest, grammars = complexity_runs.load_runs({str(changed_folder)!r})\n"
     genuine = variant(
         work_dir,
         "genuine.py",
         (SIX_PLACEHOLDER, "    placeholder = False\n"),
         (COMPLEXITY_PLACEHOLDER, "    complexity_placeholder = False\n"),
+        (loaded, on_changed),
     )
     text = export_text(genuine, work_dir / "genuine.html")
     for warning in (SIX_WARNING, SIX_FIGURE_WARNING, COMPLEXITY_WARNING, COMPLEXITY_FIGURE_WARNING):
@@ -318,6 +505,24 @@ def test_placeholder_results_are_named_as_such(work_dir):
     assert band_not_number not in text
     assert "Saved results: 66 runs" in text
     assert "Saved results of the complexity experiment:" in text
+    # must reject: counts typed into the text beside the figure. On the changed runs every sentence
+    # of the reading gives the changed counts, and none gives those of the production runs
+    # (the production runs are the default folder whenever the default is no placeholder)
+    before = reading_of_the_default or reading_in_prose(
+        production_runs, production_manifest, production_drawn
+    )
+    after = reading_in_prose(changed_runs, changed_manifest, changed_drawn)
+    assert list(after) == [
+        "dashed",
+        "not corrected",
+        "below the dashed part",
+        "fall across",
+        "largest size",
+    ]
+    for name in after:
+        assert after[name] in text and before[name] not in text and after[name] != before[name], (
+            name
+        )
     assert "Reading the figure." in text
 
 
@@ -421,6 +626,31 @@ def conventions_broken(source: str) -> list[str]:
         for text in prose_texts(source)
         if broken_paragraphs(text)
     ]
+    return found
+
+
+# what every table of the notebook shows, and the number of decimals it is rounded to
+DECIMALS_OF_THE_TABLES = {
+    "results.distance_table(distance)": 4,
+    "complexity_runs.admission_table(grammars)": None,
+    "complexity_runs.grammar_table(grammars)": 3,
+    "complexity_runs.history_table(_named)": 3,
+    "complexity_runs.measures_table(_named)": 3,
+    "trends": 4,
+    "sizes": 4,
+    "complexity_runs.mean_table(complexity_data)": 3,
+    "all_trends[all_trends['expected'] == 'none']": 4,
+    "complexity_runs.job_table(complexity_saved)": 3,
+}
+
+
+def decimals_of_the_tables(source: str) -> dict:
+    """For every ``views.table(...)`` of a notebook: what is shown, and the decimals given (None if none)."""
+    found = {}
+    for node in ast.walk(ast.parse(source)):
+        if isinstance(node, ast.Call) and ast.unparse(node.func) == "views.table":
+            decimals = node.args[1].value if len(node.args) > 1 else None
+            found[ast.unparse(node.args[0])] = decimals
     return found
 
 
@@ -531,6 +761,16 @@ def test_notebook_structure():
     ):
         assert call in source, call
     assert "from tutorial import notebook_views as views" in source and "inspect." not in source
+    # the decimals of every table, written here a second time
+    assert decimals_of_the_tables(source) == DECIMALS_OF_THE_TABLES
+    # must reject: the table of the grammars with one decimal, and a table shown without rounding
+    one_decimal = source.replace(
+        "views.table(complexity_runs.grammar_table(grammars), 3)",
+        "views.table(complexity_runs.grammar_table(grammars), 1)",
+    )
+    assert decimals_of_the_tables(one_decimal) != DECIMALS_OF_THE_TABLES and one_decimal != source
+    unrounded = source.replace("views.table(sizes, 4)", "views.table(sizes)")
+    assert decimals_of_the_tables(unrounded) != DECIMALS_OF_THE_TABLES and unrounded != source
     broken = source.replace(
         "The six grammars differ in kind. ", "The six grammars differ in kind.\n    "
     )
@@ -727,6 +967,32 @@ def test_fallback_of_notebook_c_holds_the_figures_and_their_numbers(work_dir, fa
     assert len(complexity["trend"]) == 2 * len(complexity["sizes"]) * 3
     assert sorted({row["expected"] for row in complexity["trend"]}) == ["falls", "none"]
     assert set(complexity["quantities"]) == {"score", "auc", "divergence_bits"}
+    # The data say which part of a line is dashed and why: the band of the design that the
+    # settings of the runs leave out (found here from the settings), between the two levels beside it.
+    held = [level["band_bits"] for level in complexity_manifest["settings"]["levels"]]
+    left_out = [
+        list(level.band_bits)
+        for level in config.COMPLEXITY_DESIGN.levels
+        if list(level.band_bits) not in held
+    ]
+    assert len(complexity["segments"]) == len(complexity["levels"]) - 1
+    assert [segment["levels"] for segment in complexity["segments"]] == [
+        [first["level"], second["level"]]
+        for first, second in zip(complexity["levels"], complexity["levels"][1:], strict=False)
+    ]
+    dashed = [segment for segment in complexity["segments"] if segment["dashed"]]
+    assert all(
+        segment["bands_not_run"] == []
+        for segment in complexity["segments"]
+        if not segment["dashed"]
+    )
+    if placeholder:  # the pilot has every level of the design
+        assert left_out == [] and dashed == []
+    else:
+        assert left_out == [[1.86, 1.98]] and len(dashed) == 1
+        assert dashed[0]["bands_not_run"] == left_out and dashed[0]["levels"] == [2, 3]
+        below, above = (complexity["levels"][level]["band_bits"] for level in dashed[0]["levels"])
+        assert below[1] <= left_out[0][0] and left_out[0][1] <= above[0]
     # The divergence of the uniform guess, from the strings of the job, for the first job of every
     # level: it is the one stored with the run, on which the scores of the figure rest.
     saved_runs, _, _ = complexity_runs.load_runs(complexity_folder)

@@ -696,6 +696,37 @@
       "topological_entropy_bits": 2.046310197681887
     }
   ],
+  "segments": [
+    {
+      "levels": [
+        0,
+        1
+      ],
+      "bands_not_run": [],
+      "dashed": false
+    },
+    {
+      "levels": [
+        1,
+        2
+      ],
+      "bands_not_run": [],
+      "dashed": false
+    },
+    {
+      "levels": [
+        2,
+        3
+      ],
+      "bands_not_run": [
+        [
+          1.86,
+          1.98
+        ]
+      ],
+      "dashed": true
+    }
+  ],
   "models": {
     "rnn": {
       "50": {

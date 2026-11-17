@@ -440,13 +440,27 @@ def _(all_trends, complexity_data, complexity_runs, complexity_saved, mo, views)
 
 
 @app.cell(hide_code=True)
-def _(complexity_runs, complexity_saved, mo):
+def _(complexity_data, complexity_runs, complexity_saved, mo):
     _jobs = complexity_runs.job_table(complexity_saved)
     _smallest = int(_jobs.index.get_level_values("training strings").min())
     _choice = _jobs.xs(_smallest, level="training strings")["used to choose the weights"]
+
+    def _dashed(segment):
+        # the highest grammar of the level below the band that was not run, the lowest of the level above
+        below, above = (
+            [g["topological_entropy_bits"] for g in complexity_data["grammars"] if g["level"] == level]
+            for level in segment["levels"]
+        )
+        bands = " and ".join(f"{low:.2f} to {high:.2f}" for low, high in segment["bands_not_run"])
+        return (
+            f" The dashed part of a line joins two levels across a band of the design that was not run, {bands} bits per symbol. "
+            f"The grammars below it reach {max(below):.2f} bits per symbol and those above it start at {min(above):.2f}; no grammar lies in between."
+        )
+
+    _not_run = "".join(_dashed(segment) for segment in complexity_data["segments"] if segment["dashed"])
     mo.md(
         f"""
-    One column for each number of training strings. A, upper row: the prediction score. B, lower row: the area under the ROC curve of the grammaticality judgement. Every panel shows the two networks and, in grey, the first-order model against the topological entropy of the grammar. Points are grammars, and lines join the means of the levels. The dotted lines are the anchors of a row: the exact predictor at 1, the uniform guess at 0 in A, and chance at 0.5 in B. Stars: the run trained above, if the switch was off.
+    One column for each number of training strings. A, upper row: the prediction score. B, lower row: the area under the ROC curve of the grammaticality judgement. Every panel shows the two networks and, in grey, the first-order model against the topological entropy of the grammar. Points are grammars, and lines join the means of the levels.{_not_run} The dotted lines are the anchors of a row: the exact predictor at 1, the uniform guess at 0 in A, and chance at 0.5 in B. Stars: the run trained above, if the switch was off.
 
     The grey line is not a network without memory under the same conditions. The first-order model counts on all the training strings, while a network keeps about a fifth of them to choose its weights: {_choice.min():.0f} to {_choice.max():.0f} strings of the {_smallest} in the first column.
     """
@@ -468,7 +482,39 @@ def _(complexity_placeholder, mo):
 
 
 @app.cell(hide_code=True)
-def _(complexity_data, complexity_placeholder, mo, sizes, trends):
+def _(complexity_data, complexity_placeholder, complexity_runs, config, mo, sizes, trends):
+    def _weight():
+        # what the verdicts rest on: counts, each from the runs shown
+        text = (
+            f"The {len(trends)} tests are not corrected for their number: {complexity_runs.supported_when_divided(trends)} of them keep "
+            f"a p-value of at most {config.TREND_ALPHA:g} divided by {len(trends)}. "
+            f"Each test pools the {len(complexity_data['grammars'])} grammars of the {len(complexity_data['levels'])} levels."
+        )
+        for segment in complexity_data["segments"]:
+            if segment["dashed"]:
+                gap = complexity_runs.gap_counts(complexity_data, segment)
+                text += (
+                    f" On the {gap['grammars_below']} grammars below the dashed part alone, {gap['supported_below']} of the "
+                    f"{gap['combinations']} combinations have a negative correlation with a p-value of at most {config.TREND_ALPHA:g}. "
+                    f"In {gap['larger_across']} of the {gap['combinations']} combinations the mean of a level falls more across the dashed part, "
+                    f"from level {gap['levels'][0] + 1} to level {gap['levels'][1] + 1}, than from level {gap['lowest_level'] + 1} to level {gap['levels'][0] + 1}."
+                )
+        return text
+
+    def _largest():
+        # the largest number of training strings: in how many grammars one model is above another
+        size = complexity_data["sizes"][-1]
+        above = complexity_runs.above_table(complexity_data, size).set_index(["model", "compared with", "measure"])["above"]
+        total = len(complexity_data["grammars"])
+        first, second = (config.MODEL_LABELS[model] for model in complexity_data["models"])
+        reference = complexity_runs.FIRST_ORDER_NAME
+        score, area = "prediction score", "area under the curve"
+        return (
+            f"With {size} training strings the {first} is above the {reference} in {above[first, reference, score]} of {total} grammars for the {score} "
+            f"and in {above[first, reference, area]} of {total} for the {area}; the {second} in {above[second, reference, score]} of {total} and in {above[second, reference, area]} of {total}. "
+            f"The {first} is above the {second} in {above[first, second, score]} of {total} grammars for the {score} and in {above[first, second, area]} of {total} for the {area}."
+        )
+
     def _reading():
         parts = []
         for name in ("prediction score", "area under the curve"):
@@ -486,6 +532,10 @@ def _(complexity_data, complexity_placeholder, mo, sizes, trends):
         return mo.md(
             f"""
     **Reading the figure.** {" ".join(parts)} From the smallest to the largest number of training strings the measure is better in {better}. A combination counts as supporting the expectation if Spearman's correlation is negative and its one-sided p-value is at most 0.05.
+
+    {_weight()}
+
+    {_largest()}
     """
         )
 

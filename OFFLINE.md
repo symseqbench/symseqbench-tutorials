@@ -34,4 +34,4 @@ Notebooks B and C open the same way, with `notebooks/b_behaviour.py` or `noteboo
 
 ## If the installation fails
 
-Every notebook has a folder in `fallback/`: `fallback/a_generate_and_measure/`, `fallback/b_behaviour/` and `fallback/c_networks/`. Each holds a static HTML export of the notebook, which opens in any browser, the final figure (PDF, PNG, SVG) and the numbers of the figure (JSON). The folder of notebook A also holds its three tables and the two exact panels of the worked example. The folder of notebook C holds its two figures, each with its numbers. A participant without a working installation can follow with those, or pair up.
+Every notebook has a folder in `fallback/`: `fallback/a_generate_and_measure/`, `fallback/b_behaviour/` and `fallback/c_networks/`. Each holds a static HTML export of the notebook, which opens in any browser, the final figure (PDF, PNG, SVG) and the numbers of the figure (JSON). The folder of notebook A also holds its four tables and the two exact panels of the worked example. The folder of notebook C holds its two figures, each with its numbers. A participant without a working installation can follow with those, or pair up.

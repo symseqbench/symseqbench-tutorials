@@ -16,7 +16,7 @@ def _(mo):
     mo.md(r"""
     # A. Generate and measure
 
-    This notebook will first check the installation. It will then take one small grammar, compute its entropy rate and its memory (excess entropy) in closed form, draw two exact pictures of it, and compare the closed forms with estimates from generated sequences. After that it will generate strings from a ladder of grammars of increasing structural complexity and measure them at four levels: tokens, strings, string sets and grammars. It ends with one figure.
+    This notebook will first check the installation. It will then take one small grammar, compute its entropy rate and its memory (excess entropy) in closed form, draw two exact pictures of it, and compare the closed forms with estimates from generated sequences. The main exercise synthesises a regular grammar at a chosen topological entropy and checks the result at four levels: tokens, strings, string sets and grammars. An optional ladder compares other grammar families. It ends with one figure.
 
     The generators and the measures are those of SymSeq. The functions imported from `tutorial` are short wrappers around them.
     """)
@@ -196,7 +196,69 @@ def _(p, pd, seed_box, sequence, views, worked_example):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 2. A ladder of grammars
+    ## 2. A grammar at a chosen complexity
+
+    Choose a target topological entropy. SymSeq starts with a random directed graph and changes one edge at a time. This is **Glauber dynamics**, a Markov-chain Monte Carlo method: each proposed edge addition or removal is accepted with a probability that depends on the score. A good score means a graph whose spectral radius is close to the target and which stays connected. The spectral radius is $\lambda_{\max}$, so the topological entropy is $\ln \lambda_{\max}$ in nats, or $\log_2 \lambda_{\max}$ in bits per symbol.
+
+    The table reports the target and two measured values: the achieved entropy of the open graph, and the entropy after the end marker is linked back to the start (the closed graph used by SymSeq). The grammar has eight states and six symbols; two symbols occur in two states, so context can matter even when the visible symbol is the same.
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    target_slider = mo.ui.slider(0.6, 1.8, step=0.1, value=1.4, label="target TE (bits/symbol)", show_value=True)
+    synthesis_seed = mo.ui.number(1, 100, value=7, label="grammar seed")
+    mo.hstack([target_slider, synthesis_seed], justify="start")
+    return synthesis_seed, target_slider
+
+
+@app.cell
+def _(install_ok, synthesis_seed, target_slider):
+    from tutorial import prescribed
+
+    assert install_ok
+    prescribed_result = prescribed.make_prescribed(target_slider.value, seed=synthesis_seed.value)
+    return prescribed, prescribed_result
+
+
+@app.cell
+def _(pd, prescribed_result, views):
+    if "spec" in prescribed_result:
+        prescribed_summary = pd.DataFrame(
+            [
+                {"quantity": "target TE (bits/symbol)", "value": prescribed_result["target_bits"]},
+                {"quantity": "achieved TE, open graph", "value": prescribed_result["achieved_open_bits"]},
+                {"quantity": "achieved TE, closed graph", "value": prescribed_result["closed_bits"]},
+                {"quantity": "memory gap (bits/target)", "value": prescribed_result["memory_gap"]},
+                {"quantity": "edges", "value": prescribed_result["n_edges"]},
+            ]
+        ).set_index("quantity")
+    else:
+        prescribed_summary = pd.DataFrame({"no grammar": [prescribed_result["reason"]]})
+    views.table(prescribed_summary, 3)
+    return (prescribed_summary,)
+
+
+@app.cell
+def _(pd, prescribed, prescribed_result, views):
+    prescribed_examples = prescribed.example_strings(prescribed_result) if "spec" in prescribed_result else []
+    views.table(pd.DataFrame({"example strings": prescribed_examples})) if prescribed_examples else None
+    return (prescribed_examples,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    Change the target or the seed. The convergence curve and the measured values in the final figure update with them. The four levels of measurement are the same as before: the examples are tokens and strings, the collection of examples is a string set, and the graph is the grammar. Try a second target and ask what changed: the number of allowed walks, the example strings, or only the probabilities?
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 3. Optional: a ladder of grammars
 
     The next cells will generate strings from seven grammars: the worked example, a regular grammar sampled under constraints, an n-AX grammar, non-adjacent dependencies (plain, nested and crossed), and a Dyck language. The controls set the number of states and the alphabet size of the regular grammar, the number of contexts $n$ of n-AX, the number of fillers between the two elements of a non-adjacent dependency, and the nesting depth of the Dyck language. The number of states is kept between the alphabet size and twice the alphabet size.
 
@@ -343,18 +405,20 @@ def _(ladder, rungs, table, views):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 3. One figure
+    ## 4. One figure
 
-    The figure will collect the results. A: estimates of the entropy rate and of the memory of the worked example against the length of the sequence, with the closed forms as grey lines. B: entropy rate of the worked example against $p$, with the topological entropy as the dashed line. C: entropy rate of each grammar of the ladder, exact (open circles) and estimated (filled circles). D: estimated memory of each grammar.
+    The figure will collect the results. A: estimates of the entropy rate and of the memory of the worked example against the length of the sequence, with the closed forms as grey lines. B: entropy rate of the worked example against $p$, with the topological entropy as the dashed line. C: the sampler's topological entropy approaching the chosen target. D: that target beside the achieved values on the open and closed graphs.
     """)
     return
 
 
 @app.cell
-def _(convergence, curve, exact_values, ladder, plotting, table, views):
+def _(convergence, curve, prescribed, prescribed_result, plotting, views):
     plotting.apply_style()
-    figure = plotting.figure_generate_and_measure(convergence, curve, ladder.figure_rungs(table, exact_values))
-    views.full_width(figure)
+    figure = plotting.figure_generate_and_measure(
+        convergence, curve, prescribed.figure_data(prescribed_result)
+    ) if "spec" in prescribed_result else None
+    views.full_width(figure) if figure is not None else None
     return (figure,)
 
 

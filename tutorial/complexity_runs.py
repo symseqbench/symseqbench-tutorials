@@ -840,8 +840,9 @@ def figure_data(runs: list[dict], manifest: dict, drawn: dict) -> dict:
     ``grammars``: one entry per admitted grammar, by level and grammar seed. Per model and training
     size, ``seeds`` holds the value of every training seed for each grammar, ``grammar`` the mean
     over seeds (the unit of the figure and of the trend), and ``level`` the mean over the grammars
-    of each level. ``first_order`` holds the same for the first-order model. The function raises if
-    a grammar has no run for a model and size.
+    of each level. ``first_order`` holds the same for the first-order model. ``segments`` says for
+    each pair of neighbouring levels whether a band of the design between them was not run
+    (``level_segments``). The function raises if a grammar has no run for a model and size.
     """
     grammars = [
         {
@@ -893,24 +894,98 @@ def figure_data(runs: list[dict], manifest: dict, drawn: dict) -> dict:
             out[str(n_train)] = entry
         return out
 
+    level_entries = [
+        {
+            "level": level,
+            "band_bits": drawn["levels"][level]["band_bits"],
+            "topological_entropy_bits": float(
+                np.mean([grammars[i]["topological_entropy_bits"] for i in of_level[level]])
+            ),
+        }
+        for level in levels
+    ]
+    bands_of_the_settings = [level["band_bits"] for level in manifest["settings"]["levels"]]
     return {
         "kind": manifest["kind"],
         "placeholder": manifest["placeholder"],
         "sizes": list(manifest["sizes"]),
         "seeds": list(manifest["seeds"]),
         "grammars": grammars,
-        "levels": [
-            {
-                "level": level,
-                "band_bits": drawn["levels"][level]["band_bits"],
-                "topological_entropy_bits": float(
-                    np.mean([grammars[i]["topological_entropy_bits"] for i in of_level[level]])
-                ),
-            }
-            for level in levels
-        ],
+        "levels": level_entries,
+        "segments": level_segments(level_entries, bands_of_the_settings),
         "models": {model: gather("measures", model) for model in manifest["models"]},
         "first_order": gather("first_order", None),
+    }
+
+
+def level_segments(levels: list[dict], bands_of_the_settings: list) -> list[dict]:
+    """For each pair of neighbouring levels that were run: was a band of the design between them not run?
+
+    ``levels`` are the levels of the figure, lowest first, each with its ``level`` and its
+    ``band_bits``. ``bands_of_the_settings`` are the bands of all levels in the settings of the
+    runs shown. A band of ``config.COMPLEXITY_DESIGN`` counts as not run if these settings do not
+    hold it. The rule reads the settings alone and never a result.
+
+    Returns one entry per pair of neighbouring levels: ``levels``, the two levels; ``bands_not_run``,
+    the bands of the design that were not run and lie between the bands of the two; ``dashed``,
+    true if there is such a band. The figure then draws the line between the two level means
+    dashed: it crosses a range of topological entropy in which no grammar was drawn.
+    """
+    held = {tuple(band) for band in bands_of_the_settings}
+    not_run = [
+        tuple(level.band_bits)
+        for level in config.COMPLEXITY_DESIGN.levels
+        if tuple(level.band_bits) not in held
+    ]
+    segments = []
+    for lower, upper in itertools.pairwise(levels):
+        between = [
+            list(band)
+            for band in not_run
+            if lower["band_bits"][1] <= band[0] and band[1] <= upper["band_bits"][0]
+        ]
+        segments.append(
+            {
+                "levels": [lower["level"], upper["level"]],
+                "bands_not_run": between,
+                "dashed": bool(between),
+            }
+        )
+    return segments
+
+
+def restricted_to(data: dict, levels) -> dict:
+    """The numbers of the figure for the grammars of some levels only, in the form of ``figure_data``.
+
+    Grammars, levels and every value of the other levels are left out; a segment is kept if both
+    its levels are. ``trend_table`` on the result is the trend across those grammars alone.
+    """
+    levels = set(levels)
+    kept = [i for i, grammar in enumerate(data["grammars"]) if grammar["level"] in levels]
+    positions = [i for i, level in enumerate(data["levels"]) if level["level"] in levels]
+    if not kept:
+        raise ValueError(f"No grammar at the levels {sorted(levels)}.")
+
+    def cut(by_size: dict) -> dict:
+        return {
+            size: {
+                measure: {
+                    "seeds": [entry["seeds"][i] for i in kept],
+                    "grammar": [entry["grammar"][i] for i in kept],
+                    "level": [entry["level"][i] for i in positions],
+                }
+                for measure, entry in by_measure.items()
+            }
+            for size, by_measure in by_size.items()
+        }
+
+    return {
+        **data,
+        "grammars": [data["grammars"][i] for i in kept],
+        "levels": [data["levels"][i] for i in positions],
+        "segments": [s for s in data["segments"] if set(s["levels"]) <= levels],
+        "models": {model: cut(by_size) for model, by_size in data["models"].items()},
+        "first_order": cut(data["first_order"]),
     }
 
 
@@ -1037,6 +1112,115 @@ def size_table(data: dict) -> pd.DataFrame:
                         else float("nan"),
                     }
                 )
+    return pd.DataFrame(rows)
+
+
+def fall_table(data: dict, segment: dict) -> pd.DataFrame:
+    """Per network, measure and training size: the fall of the level mean below a segment and across it.
+
+    ``fall below``: from the mean of the lowest level to the mean of the lower level of the
+    segment. ``fall across``: from the lower to the upper level of the segment. A fall is positive
+    if the mean goes down as the topological entropy goes up. ``larger across`` says whether the
+    one segment holds more of the fall than all the levels below it together.
+    """
+    numbers = [level["level"] for level in data["levels"]]
+    lower, upper = (numbers.index(level) for level in segment["levels"])
+    rows = []
+    for measure in EXPECTED_DIRECTION:
+        for model, by_size in data["models"].items():
+            for n_train, entry in by_size.items():
+                means = entry[measure]["level"]
+                below, across = means[0] - means[lower], means[lower] - means[upper]
+                rows.append(
+                    {
+                        "network": config.MODEL_LABELS[model],
+                        "training strings": int(n_train),
+                        "measure": MEASURE_NAMES[measure],
+                        "fall below": below,
+                        "fall across": across,
+                        "larger across": bool(across > below),
+                    }
+                )
+    return pd.DataFrame(rows)
+
+
+def gap_counts(data: dict, segment: dict) -> dict:
+    """What can be counted about a segment that crosses a band of the design that was not run.
+
+    ``highest_below`` and ``lowest_above``: the largest topological entropy of a grammar of the
+    level below the band and the smallest of the level above it. ``grammars_below`` and
+    ``supported_below``: the number of grammars at the levels below the band, and in how many of
+    the ``combinations`` of network, measure and training size the trend is supported on those
+    grammars alone (``trend_table`` on ``restricted_to``). ``larger_across``: in how many
+    combinations the level mean falls more across the band than over all the levels below it
+    (``fall_table``).
+    """
+    lower, upper = segment["levels"]
+    below = restricted_to(
+        data, [level["level"] for level in data["levels"] if level["level"] <= lower]
+    )
+    trends = trend_table(below)
+    tested = trends[trends["expected"] != "none"]
+    falls = fall_table(data, segment)
+
+    def entropies(level: int) -> list[float]:
+        return [g["topological_entropy_bits"] for g in data["grammars"] if g["level"] == level]
+
+    return {
+        "levels": [lower, upper],
+        "lowest_level": data["levels"][0]["level"],
+        "bands_not_run": segment["bands_not_run"],
+        "highest_below": max(entropies(lower)),
+        "lowest_above": min(entropies(upper)),
+        "grammars_below": len(below["grammars"]),
+        "combinations": len(tested),
+        "supported_below": int((tested["verdict"] == SUPPORTED).sum()),
+        "larger_across": int(falls["larger across"].sum()),
+    }
+
+
+def supported_when_divided(trends: pd.DataFrame) -> int:
+    """How many cells of the expectation stay supported if the threshold is divided by their number.
+
+    ``trends`` are the cells of the expectation of ``trend_table``. Each was tested at
+    ``config.TREND_ALPHA`` on its own. Dividing that threshold by the number of cells is the
+    Bonferroni correction for having made so many tests.
+    """
+    tested = trends[trends["expected"] != "none"]
+    threshold = config.TREND_ALPHA / len(tested)
+    kept = (tested["verdict"] == SUPPORTED) & (tested["p (one-sided, for a fall)"] <= threshold)
+    return int(kept.sum())
+
+
+FIRST_ORDER_NAME = "first-order model"
+
+
+def above_table(data: dict, n_train: int) -> pd.DataFrame:
+    """At one training size: in how many grammars a network is above the first-order model, and above the other network.
+
+    One row per measure of the expectation and pair of models. ``above`` counts the grammars in
+    which the first of the pair has the larger value, each grammar with its mean over training seeds.
+    """
+    pairs = [(model, None) for model in data["models"]]
+    pairs += list(itertools.combinations(data["models"], 2))
+    rows = []
+    for measure in EXPECTED_DIRECTION:
+        for first, second in pairs:
+            other = data["first_order"] if second is None else data["models"][second]
+            a = np.array(data["models"][first][str(n_train)][measure]["grammar"])
+            b = np.array(other[str(n_train)][measure]["grammar"])
+            rows.append(
+                {
+                    "model": config.MODEL_LABELS[first],
+                    "compared with": FIRST_ORDER_NAME
+                    if second is None
+                    else config.MODEL_LABELS[second],
+                    "measure": MEASURE_NAMES[measure],
+                    "training strings": int(n_train),
+                    "grammars": len(a),
+                    "above": int((a > b).sum()),
+                }
+            )
     return pd.DataFrame(rows)
 
 

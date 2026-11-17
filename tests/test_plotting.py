@@ -17,7 +17,7 @@ import pytest
 from symseq.metrics.grammar import topological_entropy
 
 from tutorial import closed_forms as cf
-from tutorial import config, plotting, worked_example
+from tutorial import complexity_runs, config, plotting, worked_example
 from tutorial.generate import two_state_grammar
 
 CANONICAL = Path.home() / "repos" / "hetsyn" / "defaults" / "figure_style.py"
@@ -125,25 +125,30 @@ def test_notebook_figure_has_four_panels_and_no_title(work_dir):
         "topological_entropy": 0.694,
         "p_max": 0.382,
     }
-    rungs = {
-        "names": ["a", "b", "c"],
-        "entropy_rate": [0.5, 0.9, 1.2],
-        "entropy_rate_exact": [0.5, 0.86, 0.78],
-        "excess_entropy": [1, 1.4, 1.6],
+    prescribed = {
+        "target_bits": 1.4,
+        "steps": [0, 10, 20],
+        "entropy_bits": [0.8, 1.2, 1.39],
+        "score": [0.5, 0.9, 0.99],
+        "achieved_open_bits": 1.39,
+        "closed_bits": 1.44,
+        "memory_gap": 0.07,
+        "mean_length": 9.1,
+        "n_edges": 22,
     }
     with matplotlib.rc_context():
         plotting.apply_style()
-        fig = plotting.figure_generate_and_measure(convergence, curve, rungs)
+        fig = plotting.figure_generate_and_measure(convergence, curve, prescribed)
         assert len(fig.axes) == 4
         assert tuple(fig.get_size_inches()) == plotting.FULL_SLIDE
         assert all(ax.get_title() == "" for ax in fig.axes) and fig._suptitle is None
         data = plotting.save_figure_data(
-            {"convergence": convergence, "curve": curve, "rungs": rungs}, work_dir, "figure"
+            {"convergence": convergence, "curve": curve, "prescribed": prescribed}, work_dir, "figure"
         )
         plt.close(fig)
     assert data.read_text().count("entropy_rate") >= 3
     with pytest.raises(KeyError):
-        plotting.figure_generate_and_measure({}, curve, rungs)  # must reject: missing data
+        plotting.figure_generate_and_measure({}, curve, prescribed)  # must reject: missing data
     plt.close("all")
 
 
@@ -348,10 +353,14 @@ def test_standard_error_of_a_distance_agrees_with_repeated_sampling():
     assert results.distance_standard_error(-0.001, n_targets) == 0.0
 
 
-def complexity_data(placeholder: bool = False, lowest_score: float = 0.3) -> dict:
+def complexity_data(
+    placeholder: bool = False, lowest_score: float = 0.3, dashed: tuple[int, ...] = ()
+) -> dict:
     """Three levels of two grammars: the score and the area fall as the entropy rises.
 
     ``lowest_score`` is the score of the first-order model on the last grammar at 50 strings.
+    ``dashed`` holds the positions of the segments between neighbouring levels that cross a band
+    which was not run (0: first to second level, 1: second to third).
     """
     grammars = [
         {
@@ -400,6 +409,17 @@ def complexity_data(placeholder: bool = False, lowest_score: float = 0.3) -> dic
                 "topological_entropy_bits": 1.32 + 0.3 * level,
             }
             for level in range(3)
+        ],
+        "segments": [
+            {
+                "levels": [position, position + 1],
+                # the bands of the levels end at 1.4 + 0.3 * level and begin at 1.25 + 0.3 * level
+                "bands_not_run": [[1.45 + 0.3 * position, 1.5 + 0.3 * position]]
+                if position in dashed
+                else [],
+                "dashed": position in dashed,
+            }
+            for position in range(2)
         ],
         "models": {"rnn": by_size(0.0), "linear transformer": by_size(0.02)},
         "first_order": by_size(0.2, last=lowest_score),
@@ -457,14 +477,39 @@ def complexity_figure_problems(fig, data: dict) -> list[str]:
                     == matplotlib.colors.to_hex(colour)
                 ]
                 entry = by_size[size][measure]
-                level = [
-                    line
-                    for line in mine
-                    if line.get_linestyle() == "-"
-                    and len(line.get_xdata()) == len(x_level)
-                    and np.allclose(line.get_xdata(), x_level)
-                    and np.allclose(line.get_ydata(), entry["level"], rtol=0.0, atol=1e-12)
-                ]
+                # the line through the level means: which neighbouring levels a line joins, and how
+                joined: dict[int, list[str]] = {}
+                strays = 0
+                for line in mine:
+                    if line.get_linestyle() not in ("-", "--"):
+                        continue
+                    xs, ys = line.get_xdata(), line.get_ydata()
+                    pairs = 0
+                    for k in range(len(xs) - 1):
+                        for position in range(len(x_level) - 1):
+                            if np.allclose(
+                                [xs[k], xs[k + 1]], x_level[position : position + 2]
+                            ) and np.allclose(
+                                [ys[k], ys[k + 1]],
+                                entry["level"][position : position + 2],
+                                rtol=0.0,
+                                atol=1e-12,
+                            ):
+                                joined.setdefault(position, []).append(line.get_linestyle())
+                                pairs += 1
+                    strays += pairs != len(xs) - 1  # a line that is not the level means
+                every_pair_once = sorted(joined) == list(range(len(x_level) - 1)) and all(
+                    len(styles) == 1 for styles in joined.values()
+                )
+                level = [1] if every_pair_once and not strays else []
+                wanted_styles = {
+                    position: ["--" if segment["dashed"] else "-"]
+                    for position, segment in enumerate(data["segments"])
+                }
+                if level and joined != wanted_styles:
+                    problems.append(
+                        f"{here}: the line of {name} is not dashed exactly where a band was not run"
+                    )
                 points = [
                     line
                     for line in mine
@@ -603,6 +648,111 @@ def test_complexity_figure_has_a_panel_per_training_size_and_named_anchors():
             plotting.figure_complexity(
                 {"placeholder": False, "grammars": []}
             )  # must reject: no data
+    plt.close("all")
+
+
+def dashed_stretches(fig) -> list[list[tuple[float, ...]]]:
+    """For every panel of a figure: the horizontal positions of each dashed line in it, sorted."""
+    return [
+        sorted(
+            tuple(float(x) for x in line.get_xdata())
+            for line in ax.get_lines()
+            if line.get_linestyle() == "--"
+        )
+        for ax in fig.axes
+    ]
+
+
+def test_complexity_figure_dashes_the_line_across_a_band_that_was_not_run():
+    # how the segments become stretches of one line style, by hand
+    solid, dashed = {"dashed": False}, {"dashed": True}
+    assert plotting.level_stretches([solid, solid, dashed]) == [("-", 0, 2), ("--", 2, 3)]
+    assert plotting.level_stretches([dashed, solid]) == [("--", 0, 1), ("-", 1, 2)]
+    assert plotting.level_stretches([solid, dashed, solid]) == [
+        ("-", 0, 1),
+        ("--", 1, 2),
+        ("-", 2, 3),
+    ]
+    assert plotting.level_stretches([dashed, dashed]) == [("--", 0, 2)]
+    assert plotting.level_stretches([solid] * 4) == [("-", 0, 4)]
+    assert plotting.level_stretches([]) == [("-", 0, 0)]
+    with matplotlib.rc_context():
+        plotting.apply_style()
+        # no band left out: every line solid, and the legend has nothing to say about dashes
+        plain = complexity_data()
+        fig = plotting.figure_complexity(plain)
+        assert dashed_stretches(fig) == [[]] * 6
+        assert plotting.NOT_RUN_LABEL not in [t.get_text() for t in fig.legends[0].get_texts()]
+
+        # the band between the second and the third level was not run
+        data = complexity_data(dashed=(1,))
+        x_level = [level["topological_entropy_bits"] for level in data["levels"]]
+        with_gap = plotting.figure_complexity(data)
+        assert complexity_figure_problems(with_gap, data) == []
+        # exactly one dashed stretch per series in every panel, between the right two levels
+        assert dashed_stretches(with_gap) == [[(x_level[1], x_level[2])] * 3] * 6
+        legend = [text.get_text() for text in with_gap.legends[0].get_texts()]
+        assert legend == [
+            "tanh RNN",
+            "linear transformer",
+            "first-order model",
+            "across a band that was not run",
+        ]
+        handle = with_gap.legends[0].legend_handles[-1]
+        assert handle.get_linestyle() == "--" and handle.get_marker() in ("None", "", None)
+        # the dashes are not the dots of the anchors, and they have the colour of their series
+        for ax in with_gap.axes:
+            colours = sorted(
+                matplotlib.colors.to_hex(line.get_color())
+                for line in ax.get_lines()
+                if line.get_linestyle() == "--"
+            )
+            assert colours == sorted(
+                matplotlib.colors.to_hex(colour)
+                for colour in (*plotting.MODEL_COLORS.values(), plotting.COLORS["reference"])
+            )
+        # must reject: a figure with every line solid, for data that leave a band out
+        wrong = "the line of tanh RNN is not dashed exactly where a band was not run"
+        assert f"upper row, 50 strings: {wrong}" in complexity_figure_problems(fig, data)
+        # must reject: a dashed line for data that leave no band out
+        assert f"lower row, 800 strings: {wrong}" in complexity_figure_problems(with_gap, plain)
+        # must reject: the dashes between the wrong two levels
+        other = complexity_data(dashed=(0,))
+        assert f"upper row, 200 strings: {wrong}" in complexity_figure_problems(with_gap, other)
+        assert complexity_figure_problems(plotting.figure_complexity(other), other) == []
+        # must reject: a line that leaves a pair of levels unjoined
+        broken = plotting.figure_complexity(data)
+        next(line for line in broken.axes[0].get_lines() if line.get_linestyle() == "--").remove()
+        assert complexity_figure_problems(broken, data) != []
+        # with a run trained here the legend names the dashes before the star
+        live = {"topological_entropy_bits": 1.6, "n_train": 200, "rnn": {"score": 0.5, "auc": 0.9}}
+        starred = plotting.figure_complexity(data, live=live)
+        assert [text.get_text() for text in starred.legends[0].get_texts()][-2:] == [
+            "across a band that was not run",
+            "trained here",
+        ]
+        # must reject: figure data that do not say which segments are dashed
+        without = {key: value for key, value in data.items() if key != "segments"}
+        with pytest.raises(KeyError, match="segments"):
+            plotting.figure_complexity(without)
+
+        # the saved runs: the production runs leave one band of the design out, between the third
+        # and the fourth of their levels; the pilot has every level of the design
+        for kind, position in (("production", 2), ("pilot", None)):
+            saved, manifest, drawn = complexity_runs.load_runs(complexity_runs.FOLDERS[kind])
+            real = complexity_runs.figure_data(saved, manifest, drawn)
+            x_real = [level["topological_entropy_bits"] for level in real["levels"]]
+            drawn_figure = plotting.figure_complexity(real)
+            assert complexity_figure_problems(drawn_figure, real) == [], kind
+            wanted = [] if position is None else [(x_real[position], x_real[position + 1])] * 3
+            assert dashed_stretches(drawn_figure) == [wanted] * 6, kind
+            if position is not None:
+                # the two levels lie on the two sides of the band that was not run
+                (band,) = real["segments"][position]["bands_not_run"]
+                assert x_real[position] < band[0] < band[1] < x_real[position + 1]
+                assert len(real["levels"]) == 4 and band == [1.86, 1.98]
+            else:
+                assert len(real["levels"]) == len(config.COMPLEXITY_DESIGN.levels) == 5
     plt.close("all")
 
 
